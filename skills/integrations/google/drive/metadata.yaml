@@ -1,0 +1,19 @@
+id: org.antigravity.google.drive
+name: Google Drive
+description: "List and search files in Google Drive."
+version: 1.0.0
+activation_strategy: hybrid
+activation_keywords:
+  - list
+  - file
+  - drive
+  - search
+  - find
+  - google
+parameters:
+  query:
+    type: string
+    description: "Search query for files (e.g., name contains 'report')."
+  limit:
+    type: integer
+    description: "Max number of files to return."

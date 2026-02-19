@@ -1,0 +1,8 @@
+# Redirects for Cloudflare Pages
+# https://developers.cloudflare.com/pages/configuration/redirects/
+
+# Redirect www to apex
+https://www.amadeq.org/* https://amadeq.org/:splat 301
+
+# Docs redirect (future)
+/docs https://amadeq.org/docs/index.html 200

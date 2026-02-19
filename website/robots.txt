@@ -1,0 +1,13 @@
+# ASP Website — amadeq.org
+# Cloudflare Pages configuration
+
+
+# Sitemaps
+Sitemap: https://amadeq.org/sitemap.xml
+
+User-agent: *
+Disallow: /home.html
+Allow: /
+
+# Crawl-delay (optional, for polite bots)
+Crawl-delay: 1

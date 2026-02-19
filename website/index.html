@@ -1,0 +1,752 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ASP — Amadeq Skill Protocol | Intelligent AI Skill Routing</title>
+    <meta name="description"
+        content="Amadeq Skill Protocol — Build AI skills in 3 lines of code. Intelligent routing, built-in safety, zero config.">
+    <meta property="og:title" content="ASP — Amadeq Skill Protocol">
+    <meta property="og:description" content="Build AI skills in 3 lines of code. Intelligent routing, built-in safety.">
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://amadeq.org">
+    <meta property="og:image" content="https://amadeq.org/og-image.png">
+    <meta property="og:image:width" content="1200">
+    <meta property="og:image:height" content="630">
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:image" content="https://amadeq.org/og-image.png">
+    <meta name="twitter:title" content="ASP — Amadeq Skill Protocol">
+    <meta name="twitter:description"
+        content="Build AI skills in 3 lines of code. Intelligent routing, built-in safety.">
+    <link rel="canonical" href="https://amadeq.org">
+    <link rel="icon" type="image/svg+xml" href="favicon.svg">
+    <link rel="manifest" href="manifest.json">
+    <meta name="theme-color" content="#7c6cf7">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&family=JetBrains+Mono:wght@400;500;600&display=swap"
+        rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+    <!-- Particle Canvas -->
+    <canvas id="particles"></canvas>
+
+    <!-- Navigation -->
+    <nav class="nav" id="nav">
+        <div class="nav-inner">
+            <a href="#" class="nav-brand">
+                <span class="logo">⚡</span>
+                <span class="brand-text">Amadeq</span>
+
+            </a>
+            <div class="nav-links" id="nav-links">
+                <a href="#features">Features</a>
+                <a href="#demo">Live Demo</a>
+                <a href="#comparison">ASP vs MCP</a>
+                <a href="#quickstart">Quick Start</a>
+                <a href="#architecture">Architecture</a>
+                <a href="https://github.com/amadeq/asp-sdk" class="nav-btn">GitHub →</a>
+            </div>
+            <button class="hamburger" id="hamburger" aria-label="Toggle menu">
+                <span></span><span></span><span></span>
+            </button>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <section class="hero">
+        <div class="hero-glow"></div>
+        <div class="hero-content">
+            <div class="hero-badge reveal">
+                <span class="badge-dot"></span>
+                Amadeq Skill Protocol v0.1.0 — Now Open Source
+            </div>
+            <h1 class="hero-title reveal">
+                AI skills in <span class="gradient-text typed-target" id="typed-hero"></span>
+            </h1>
+            <p class="hero-subtitle reveal">
+                Intelligent routing. Built-in safety. Zero config.<br>
+                The protocol that thinks for you.
+            </p>
+            <div class="hero-code reveal">
+                <div class="code-header">
+                    <div class="code-dots">
+                        <span class="dot red"></span>
+                        <span class="dot yellow"></span>
+                        <span class="dot green"></span>
+                    </div>
+                    <span class="code-label">hello.py</span>
+                    <button class="copy-btn" onclick="copyCode(this)" title="Copy code">📋</button>
+                </div>
+                <pre class="code-body"><code id="hero-code-content"><span class="kw">from</span> <span class="mod">asp</span> <span class="kw">import</span> skill, serve
+
+<span class="dec">@skill</span>(<span class="str">"greet"</span>, description=<span class="str">"Say hello"</span>)
+<span class="kw">def</span> <span class="fn">greet</span>(name: <span class="type">str</span>) -> <span class="type">str</span>:
+    <span class="kw">return</span> <span class="str">f"Hello, </span>{name}<span class="str">!"</span>
+
+<span class="fn">serve</span>()  <span class="cmt"># → localhost:8080</span></code></pre>
+            </div>
+            <div class="hero-actions reveal">
+                <a href="#quickstart" class="btn btn-primary">
+                    <span class="btn-glow"></span>
+                    Get Started →
+                </a>
+                <a href="#comparison" class="btn btn-secondary">Why ASP?</a>
+            </div>
+            <div class="hero-stats reveal">
+                <div class="stat-item">
+                    <span class="stat-value">&lt;&thinsp;<span class="counter" data-target="1">0</span>ms</span>
+                    <span class="stat-label">Routing latency</span>
+                </div>
+                <div class="stat-divider"></div>
+                <div class="stat-item">
+                    <span class="stat-value"><span class="counter" data-target="291">0</span></span>
+                    <span class="stat-label">Tests passing</span>
+                </div>
+                <div class="stat-divider"></div>
+                <div class="stat-item">
+                    <span class="stat-value"><span class="counter" data-target="4">0</span>-stage</span>
+                    <span class="stat-label">AI pipeline</span>
+                </div>
+                <div class="stat-divider"></div>
+                <div class="stat-item">
+                    <span class="stat-value"><span class="counter" data-target="0">0</span></span>
+                    <span class="stat-label">Config needed</span>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Features Section -->
+    <section class="features" id="features">
+        <div class="container">
+            <h2 class="section-title reveal">Built for <span class="gradient-text">real production</span></h2>
+            <p class="section-subtitle reveal">Everything you need to build, deploy, and scale AI skills — without
+                gluing together 15 libraries.</p>
+            <div class="features-grid">
+                <div class="feature-card reveal">
+                    <div class="feature-icon-wrap">
+                        <div class="feature-icon">🧠</div>
+                    </div>
+                    <h3>Intelligent Routing</h3>
+                    <p>4-stage BM25 → Semantic → Conflict → Tiebreak pipeline. Your query automatically finds the right
+                        skill.</p>
+                </div>
+                <div class="feature-card reveal">
+                    <div class="feature-icon-wrap">
+                        <div class="feature-icon">🛡️</div>
+                    </div>
+                    <h3>Built-in Safety</h3>
+                    <p>Regex pre-filters, TF-IDF classifier, KL-divergence anomaly brake. Fail-closed by default.</p>
+                </div>
+                <div class="feature-card reveal">
+                    <div class="feature-icon-wrap">
+                        <div class="feature-icon">📉</div>
+                    </div>
+                    <h3>Degradation FSM</h3>
+                    <p>D0→D3 automatic quality reduction under load. No other protocol has this. Your server stays
+                        alive.</p>
+                </div>
+                <div class="feature-card reveal">
+                    <div class="feature-icon-wrap">
+                        <div class="feature-icon">🔐</div>
+                    </div>
+                    <h3>Cryptographic Integrity</h3>
+                    <p>JCS canonicalization + ES256/RS512/EdDSA signatures. Every request is verifiable.</p>
+                </div>
+                <div class="feature-card reveal">
+                    <div class="feature-icon-wrap">
+                        <div class="feature-icon">⚡</div>
+                    </div>
+                    <h3>&lt;&thinsp;1ms Latency</h3>
+                    <p>LRU cache, compiled regex, batch encoding, proper IDF. Cache hits in 0.01ms.</p>
+                </div>
+                <div class="feature-card reveal">
+                    <div class="feature-icon-wrap">
+                        <div class="feature-icon">🔍</div>
+                    </div>
+                    <h3>Full Traceability</h3>
+                    <p>Every routing decision comes with trace events. Debug exactly why a skill was chosen.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Interactive Demo Section -->
+    <section class="demo" id="demo">
+        <div class="container">
+            <h2 class="section-title reveal">Try it <span class="gradient-text">live</span></h2>
+            <p class="section-subtitle reveal">Type a query below and watch ASP route it to the right skill in
+                real-time.</p>
+            <div class="demo-terminal reveal">
+                <div class="terminal-header">
+                    <div class="code-dots">
+                        <span class="dot red"></span>
+                        <span class="dot yellow"></span>
+                        <span class="dot green"></span>
+                    </div>
+                    <span class="terminal-title">ASP Interactive Demo — amadeq.org</span>
+                    <div class="terminal-status">
+                        <span class="status-dot"></span>
+                        <span>3 skills loaded</span>
+                    </div>
+                </div>
+                <div class="terminal-body">
+                    <div class="terminal-skills">
+                        <div class="skill-tag" data-query="say hello to Oleksandr">🖐 greet</div>
+                        <div class="skill-tag" data-query="what's the weather in Kyiv?">🌤 weather</div>
+                        <div class="skill-tag" data-query="calculate 42 * 7">🔢 calculator</div>
+                    </div>
+                    <div class="terminal-input-row">
+                        <span class="terminal-prompt">asp&gt;</span>
+                        <input type="text" class="terminal-input" id="demo-input"
+                            placeholder="Type a query... e.g. 'say hello to Oleksandr'" autocomplete="off">
+                        <button class="terminal-send" id="demo-send">Route →</button>
+                    </div>
+                    <div class="terminal-output" id="demo-output"></div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Comparison Section -->
+    <section class="comparison" id="comparison">
+        <div class="container">
+            <h2 class="section-title reveal">ASP vs <span class="gradient-text">MCP</span></h2>
+            <p class="section-subtitle reveal">Side by side. No marketing — just facts.</p>
+            <div class="comparison-table-wrapper reveal">
+                <table class="comparison-table">
+                    <thead>
+                        <tr>
+                            <th>Feature</th>
+                            <th class="asp-col">ASP ⚡</th>
+                            <th class="mcp-col">MCP</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>Hello World</td>
+                            <td class="asp-col"><strong>3 lines</strong></td>
+                            <td class="mcp-col">15+ files</td>
+                        </tr>
+                        <tr>
+                            <td>Intelligent Routing</td>
+                            <td class="asp-col">✅ 4-stage automatic</td>
+                            <td class="mcp-col">❌ Manual tool selection</td>
+                        </tr>
+                        <tr>
+                            <td>Built-in Safety</td>
+                            <td class="asp-col">✅ Regex + ML + Anomaly</td>
+                            <td class="mcp-col">❌ None</td>
+                        </tr>
+                        <tr>
+                            <td>Degradation</td>
+                            <td class="asp-col">✅ D0→D3 FSM</td>
+                            <td class="mcp-col">❌ None</td>
+                        </tr>
+                        <tr>
+                            <td>Crypto Signatures</td>
+                            <td class="asp-col">✅ JCS + ES256</td>
+                            <td class="mcp-col">❌ Plain JSON</td>
+                        </tr>
+                        <tr>
+                            <td>Trace Events</td>
+                            <td class="asp-col">✅ Full pipeline trace</td>
+                            <td class="mcp-col">❌ Black box</td>
+                        </tr>
+                        <tr>
+                            <td>Routing Latency</td>
+                            <td class="asp-col"><strong>&lt;&thinsp;1ms</strong></td>
+                            <td class="mcp-col">~2ms (no routing)</td>
+                        </tr>
+                        <tr>
+                            <td>Dashboard</td>
+                            <td class="asp-col">✅ Built-in</td>
+                            <td class="mcp-col">❌ Third-party</td>
+                        </tr>
+                        <tr>
+                            <td>Ecosystem</td>
+                            <td class="asp-col">🔄 Growing</td>
+                            <td class="mcp-col">✅ Established</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </section>
+
+    <!-- Quick Start Section -->
+    <section class="quickstart" id="quickstart">
+        <div class="container">
+            <h2 class="section-title reveal">Start in <span class="gradient-text">30 seconds</span></h2>
+            <div class="steps-grid">
+                <div class="step reveal">
+                    <div class="step-number">1</div>
+                    <h3>Install</h3>
+                    <div class="step-code">
+                        <code>pip install asp-sdk</code>
+                        <button class="copy-btn copy-btn-sm" onclick="copyText('pip install asp-sdk', this)">📋</button>
+                    </div>
+                </div>
+                <div class="step reveal">
+                    <div class="step-number">2</div>
+                    <h3>Create skills</h3>
+                    <div class="step-code">
+                        <pre><code><span class="kw">from</span> <span class="mod">asp</span> <span class="kw">import</span> skill, serve
+
+<span class="dec">@skill</span>(<span class="str">"weather"</span>,
+       description=<span class="str">"Get weather data"</span>,
+       keywords=[<span class="str">"weather"</span>, <span class="str">"forecast"</span>])
+<span class="kw">def</span> <span class="fn">weather</span>(city: <span class="type">str</span>) -> <span class="type">str</span>:
+    <span class="kw">return</span> <span class="str">f"☀️ 22°C in </span>{city}<span class="str">"</span>
+
+<span class="fn">serve</span>()</code></pre>
+                    </div>
+                </div>
+                <div class="step reveal">
+                    <div class="step-number">3</div>
+                    <h3>Run & test</h3>
+                    <div class="step-code">
+                        <pre><code><span class="cmt"># Start server</span>
+<span class="cmd">$ asp dev main.py</span>
+
+<span class="cmt"># Open dashboard</span>
+<span class="cmd">→ http://localhost:8080/_dashboard</span>
+
+<span class="cmt"># Send a query</span>
+<span class="cmd">$ curl -X POST localhost:8080/asp-rpc \</span>
+  -d '{"jsonrpc":"2.0",
+       "method":"asp.route",
+       "params":{"query":"weather in Kyiv"},
+       "id":1}'</code></pre>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Architecture Section -->
+    <section class="architecture" id="architecture">
+        <div class="container">
+            <h2 class="section-title reveal">How ASP <span class="gradient-text">routes your query</span></h2>
+            <div class="pipeline reveal">
+                <div class="pipeline-step" data-stage="0">
+                    <div class="pipe-icon">🛡️</div>
+                    <div class="pipe-label">Safety Check</div>
+                    <div class="pipe-desc">Regex + ML classifier</div>
+                    <div class="pipe-time">~0.3ms</div>
+                    <div class="pipe-progress"></div>
+                </div>
+                <div class="pipeline-arrow">→</div>
+                <div class="pipeline-step" data-stage="1">
+                    <div class="pipe-icon">📊</div>
+                    <div class="pipe-label">Stage 1: BM25</div>
+                    <div class="pipe-desc">Lexical scoring</div>
+                    <div class="pipe-time">~0.5ms</div>
+                    <div class="pipe-progress"></div>
+                </div>
+                <div class="pipeline-arrow">→</div>
+                <div class="pipeline-step" data-stage="2">
+                    <div class="pipe-icon">🧠</div>
+                    <div class="pipe-label">Stage 2: Semantic</div>
+                    <div class="pipe-desc">Cosine similarity</div>
+                    <div class="pipe-time">~30ms</div>
+                    <div class="pipe-progress"></div>
+                </div>
+                <div class="pipeline-arrow">→</div>
+                <div class="pipeline-step" data-stage="3">
+                    <div class="pipe-icon">⚖️</div>
+                    <div class="pipe-label">Stage 3: Conflict</div>
+                    <div class="pipe-desc">Tie resolution</div>
+                    <div class="pipe-time">~0.1ms</div>
+                    <div class="pipe-progress"></div>
+                </div>
+                <div class="pipeline-arrow">→</div>
+                <div class="pipeline-step final" data-stage="4">
+                    <div class="pipe-icon">✅</div>
+                    <div class="pipe-label">Decision</div>
+                    <div class="pipe-desc">Best skill selected</div>
+                    <div class="pipe-time">Total: &lt; 1ms*</div>
+                    <div class="pipe-progress"></div>
+                </div>
+            </div>
+            <p class="pipe-footnote">* Without semantic stage. With semantic: ~30ms. Automatically skipped under
+                load (D1+ degradation).</p>
+        </div>
+    </section>
+
+    <!-- CTA Section -->
+    <section class="cta">
+        <div class="container">
+            <div class="cta-inner reveal">
+                <h2>Ready to build?</h2>
+                <p>Create your first AI skill in under a minute.</p>
+                <div class="cta-actions">
+                    <a href="#quickstart" class="btn btn-primary btn-lg">
+                        <span class="btn-glow"></span>
+                        Get Started →
+                    </a>
+                    <a href="https://github.com/amadeq/asp-sdk" class="btn btn-secondary btn-lg">View on GitHub</a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-inner">
+                <div class="footer-brand">
+                    <span class="logo">⚡</span> Amadeq Skill Protocol
+                </div>
+                <div class="footer-links">
+                    <a href="https://amadeq.org/docs">Documentation</a>
+                    <a href="https://github.com/amadeq/asp-sdk">GitHub</a>
+                    <a href="https://discord.gg/amadeq">Discord</a>
+                </div>
+                <div class="footer-copy">
+                    © 2026 Amadeq. Apache 2.0 License.
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        /* ══════════════════════════════════════════════
+           ASP Website — Interactive JavaScript
+           ══════════════════════════════════════════════ */
+
+        // ── 1. Particle Background ──────────────────
+        (function initParticles() {
+            const canvas = document.getElementById('particles');
+            if (!canvas) return;
+            const ctx = canvas.getContext('2d');
+            let w, h, particles = [];
+            const PARTICLE_COUNT = 60;
+
+            function resize() {
+                w = canvas.width = window.innerWidth;
+                h = canvas.height = window.innerHeight;
+            }
+
+            function createParticle() {
+                return {
+                    x: Math.random() * w,
+                    y: Math.random() * h,
+                    vx: (Math.random() - 0.5) * 0.4,
+                    vy: (Math.random() - 0.5) * 0.4,
+                    r: Math.random() * 2 + 0.5,
+                    alpha: Math.random() * 0.5 + 0.1,
+                };
+            }
+
+            function init() {
+                resize();
+                particles = Array.from({ length: PARTICLE_COUNT }, createParticle);
+            }
+
+            function draw() {
+                ctx.clearRect(0, 0, w, h);
+
+                particles.forEach((p, i) => {
+                    p.x += p.vx;
+                    p.y += p.vy;
+                    if (p.x < 0 || p.x > w) p.vx *= -1;
+                    if (p.y < 0 || p.y > h) p.vy *= -1;
+
+                    ctx.beginPath();
+                    ctx.arc(p.x, p.y, p.r, 0, Math.PI * 2);
+                    ctx.fillStyle = `rgba(124, 108, 247, ${p.alpha})`;
+                    ctx.fill();
+
+                    // Connect nearby particles
+                    for (let j = i + 1; j < particles.length; j++) {
+                        const p2 = particles[j];
+                        const dx = p.x - p2.x;
+                        const dy = p.y - p2.y;
+                        const dist = Math.sqrt(dx * dx + dy * dy);
+                        if (dist < 150) {
+                            ctx.beginPath();
+                            ctx.moveTo(p.x, p.y);
+                            ctx.lineTo(p2.x, p2.y);
+                            ctx.strokeStyle = `rgba(124, 108, 247, ${0.08 * (1 - dist / 150)})`;
+                            ctx.lineWidth = 0.5;
+                            ctx.stroke();
+                        }
+                    }
+                });
+                requestAnimationFrame(draw);
+            }
+
+            window.addEventListener('resize', resize);
+            init();
+            draw();
+        })();
+
+        // ── 2. Scroll Reveal Animations ─────────────
+        (function initReveal() {
+            const observer = new IntersectionObserver((entries) => {
+                entries.forEach((entry, i) => {
+                    if (entry.isIntersecting) {
+                        // Staggered delay for items in a grid
+                        const parent = entry.target.parentElement;
+                        const siblings = parent ? parent.querySelectorAll('.reveal') : [];
+                        let index = Array.from(siblings).indexOf(entry.target);
+                        if (index < 0) index = 0;
+
+                        entry.target.style.transitionDelay = `${index * 0.08}s`;
+                        entry.target.classList.add('revealed');
+                        observer.unobserve(entry.target);
+                    }
+                });
+            }, { threshold: 0.1, rootMargin: '0px 0px -40px 0px' });
+
+            document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
+        })();
+
+        // ── 3. Animated Counters ────────────────────
+        (function initCounters() {
+            const counters = document.querySelectorAll('.counter');
+            const observer = new IntersectionObserver((entries) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        const el = entry.target;
+                        const target = parseInt(el.dataset.target);
+                        const duration = 1500;
+                        const start = performance.now();
+
+                        function tick(now) {
+                            const elapsed = now - start;
+                            const progress = Math.min(elapsed / duration, 1);
+                            // Ease out cubic
+                            const eased = 1 - Math.pow(1 - progress, 3);
+                            el.textContent = Math.round(eased * target);
+                            if (progress < 1) requestAnimationFrame(tick);
+                        }
+                        requestAnimationFrame(tick);
+                        observer.unobserve(el);
+                    }
+                });
+            }, { threshold: 0.5 });
+
+            counters.forEach(c => observer.observe(c));
+        })();
+
+        // ── 4. Typed Hero Effect ────────────────────
+        (function initTyped() {
+            const el = document.getElementById('typed-hero');
+            if (!el) return;
+            const phrases = ['3 lines', 'one decorator', 'zero config', '3 lines'];
+            let phraseIndex = 0, charIndex = 0, deleting = false;
+
+            function type() {
+                const current = phrases[phraseIndex];
+                if (deleting) {
+                    el.textContent = current.substring(0, charIndex--);
+                    if (charIndex < 0) {
+                        deleting = false;
+                        phraseIndex = (phraseIndex + 1) % phrases.length;
+                        setTimeout(type, 400);
+                        return;
+                    }
+                } else {
+                    el.textContent = current.substring(0, ++charIndex);
+                    if (charIndex === current.length) {
+                        if (phraseIndex === phrases.length - 1) return; // Stop after loop
+                        setTimeout(() => { deleting = true; type(); }, 2000);
+                        return;
+                    }
+                }
+                setTimeout(type, deleting ? 40 : 80);
+            }
+            setTimeout(type, 800);
+        })();
+
+        // ── 5. Nav Scroll Effect ────────────────────
+        (function initNavScroll() {
+            const nav = document.getElementById('nav');
+            let ticking = false;
+            window.addEventListener('scroll', () => {
+                if (!ticking) {
+                    requestAnimationFrame(() => {
+                        nav.classList.toggle('nav-scrolled', window.scrollY > 40);
+                        ticking = false;
+                    });
+                    ticking = true;
+                }
+            });
+        })();
+
+        // ── 6. Mobile Hamburger Menu ────────────────
+        (function initHamburger() {
+            const btn = document.getElementById('hamburger');
+            const links = document.getElementById('nav-links');
+            if (!btn || !links) return;
+
+            btn.addEventListener('click', () => {
+                btn.classList.toggle('active');
+                links.classList.toggle('nav-open');
+            });
+
+            links.querySelectorAll('a').forEach(a => {
+                a.addEventListener('click', () => {
+                    btn.classList.remove('active');
+                    links.classList.remove('nav-open');
+                });
+            });
+        })();
+
+        // ── 7. Interactive Demo Terminal ─────────────
+        (function initDemo() {
+            const input = document.getElementById('demo-input');
+            const output = document.getElementById('demo-output');
+            const sendBtn = document.getElementById('demo-send');
+            if (!input || !output) return;
+
+            // Skills database for client-side simulation
+            const skills = [
+                {
+                    id: 'greet', keywords: ['hello', 'hi', 'greet', 'say hello', 'hey'], icon: '🖐',
+                    exec: (q) => {
+                        const nameMatch = q.match(/(?:to|hello|hi|hey)\s+(\w+)/i);
+                        return `Hello, ${nameMatch ? nameMatch[1] : 'World'}! Welcome to ASP.`;
+                    }
+                },
+                {
+                    id: 'weather', keywords: ['weather', 'forecast', 'temperature', 'rain', 'sunny'], icon: '🌤',
+                    exec: (q) => {
+                        const cityMatch = q.match(/(?:in|for|at)\s+([A-Za-z\s]+?)(?:\?|$)/i);
+                        return `☀️ 22°C in ${cityMatch ? cityMatch[1].trim() : 'Kyiv'}, clear sky.`;
+                    }
+                },
+                {
+                    id: 'calculator', keywords: ['calculate', 'math', 'compute', 'add', 'multiply', 'sum'], icon: '🔢',
+                    exec: (q) => {
+                        const expr = q.replace(/[^0-9+\-*/().% ]/g, '').trim();
+                        try { return `= ${eval(expr)}`; }
+                        catch { return '= Error: invalid expression'; }
+                    }
+                },
+            ];
+
+            function route(query) {
+                const q = query.toLowerCase();
+                let bestSkill = null, bestScore = 0;
+                skills.forEach(s => {
+                    let score = 0;
+                    s.keywords.forEach(kw => { if (q.includes(kw)) score += 2; });
+                    if (score > bestScore) { bestScore = score; bestSkill = s; }
+                });
+                return bestSkill;
+            }
+
+            function addLine(html, cls = '') {
+                const div = document.createElement('div');
+                div.className = `term-line ${cls}`;
+                div.innerHTML = html;
+                output.appendChild(div);
+                output.scrollTop = output.scrollHeight;
+            }
+
+            async function handleQuery() {
+                const query = input.value.trim();
+                if (!query) return;
+                input.value = '';
+
+                addLine(`<span class="term-prompt">asp&gt;</span> ${query}`, 'term-cmd');
+
+                // Simulate routing delay
+                addLine('<span class="term-dim">⏳ Routing through 4-stage pipeline...</span>');
+                await new Promise(r => setTimeout(r, 300));
+
+                // Safety check
+                addLine('<span class="term-ok">✓ SAFETY_CHECK_PASS</span> <span class="term-dim">(0.2ms)</span>');
+                await new Promise(r => setTimeout(r, 150));
+
+                const skill = route(query);
+
+                if (skill) {
+                    // BM25 match
+                    addLine(`<span class="term-ok">✓ BM25_MATCH</span> → <span class="term-accent">${skill.id}</span> <span class="term-dim">(0.4ms)</span>`);
+                    await new Promise(r => setTimeout(r, 200));
+
+                    // Decision
+                    addLine(`<span class="term-ok">✓ ROUTING_DECISION_FINAL</span> → <span class="term-accent">${skill.icon} ${skill.id}</span>`);
+                    await new Promise(r => setTimeout(r, 200));
+
+                    // Execute
+                    const result = skill.exec(query);
+                    addLine(`<span class="term-result">📤 ${result}</span>`, 'term-result-line');
+                    addLine('<span class="term-dim">────────────────────────────────</span>');
+                } else {
+                    addLine('<span class="term-warn">⚠ No matching skill found</span>');
+                    addLine('<span class="term-dim">Available: greet, weather, calculator</span>');
+                    addLine('<span class="term-dim">────────────────────────────────</span>');
+                }
+            }
+
+            sendBtn.addEventListener('click', handleQuery);
+            input.addEventListener('keypress', e => { if (e.key === 'Enter') handleQuery(); });
+
+            // Skill tag clicks
+            document.querySelectorAll('.skill-tag').forEach(tag => {
+                tag.addEventListener('click', () => {
+                    input.value = tag.dataset.query;
+                    input.focus();
+                });
+            });
+        })();
+
+        // ── 8. Pipeline Animation ───────────────────
+        (function initPipelineAnim() {
+            const steps = document.querySelectorAll('.pipeline-step');
+            const observer = new IntersectionObserver((entries) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        // Animate each stage sequentially
+                        steps.forEach((step, i) => {
+                            setTimeout(() => {
+                                step.classList.add('pipe-active');
+                            }, i * 400);
+                        });
+                        observer.unobserve(entry.target);
+                    }
+                });
+            }, { threshold: 0.3 });
+
+            if (steps.length > 0) observer.observe(steps[0].parentElement);
+        })();
+
+        // ── 9. Copy Code ────────────────────────────
+        function copyCode(btn) {
+            const code = btn.closest('.hero-code, .step-code').querySelector('code');
+            navigator.clipboard.writeText(code.textContent).then(() => {
+                btn.textContent = '✅';
+                setTimeout(() => btn.textContent = '📋', 1500);
+            });
+        }
+
+        function copyText(text, btn) {
+            navigator.clipboard.writeText(text).then(() => {
+                btn.textContent = '✅';
+                setTimeout(() => btn.textContent = '📋', 1500);
+            });
+        }
+
+        // ── 10. Smooth Scroll for Anchors ───────────
+        document.querySelectorAll('a[href^="#"]').forEach(a => {
+            a.addEventListener('click', e => {
+                e.preventDefault();
+                const target = document.querySelector(a.getAttribute('href'));
+                if (target) target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+            });
+        });
+
+    </script>
+</body>
+
+</html>

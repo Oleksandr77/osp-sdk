@@ -1,0 +1,18 @@
+id: org.antigravity.youtube.analyzer
+name: YouTube Analysis
+description: Analyzes YouTube videos to extract transcripts and provide summaries.
+version: 1.0.0
+activation_strategy: hybrid
+activation_keywords:
+  - analyze
+  - video
+  - youtube
+  - transcript
+  - summarize
+parameters:
+  video_id:
+    type: string
+    description: The ID of the YouTube video to analyze.
+  url:
+    type: string
+    description: Full URL of the YouTube video (optional if video_id is provided).

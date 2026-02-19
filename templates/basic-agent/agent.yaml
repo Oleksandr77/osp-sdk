@@ -1,0 +1,9 @@
+name: basic-agent
+description: A minimal agent using OSP Standard Library
+model: gemini-pro
+skills:
+  - osp.std.fs
+  - osp.std.http
+  - osp.std.system
+parameters:
+  temperature: 0.7

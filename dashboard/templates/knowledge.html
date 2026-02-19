@@ -1,0 +1,91 @@
+{% extends "base.html" %}
+{% block title %}Knowledge Base{% endblock %}
+{% block nav_knowledge %}active{% endblock %}
+
+{% block content %}
+<div class="card" style="max-width: 800px; margin: 0 auto;">
+    <div class="page-title">
+        <h2>Knowledge Base</h2>
+        <p>Manage the documents your agent uses for RAG memory.</p>
+    </div>
+
+    <!-- Stats -->
+    <div style="display: flex; gap: 1rem; margin-bottom: 2rem;">
+        <div class="stat-card" style="flex: 1;">
+            <div class="stat-number">{{ doc_count }}</div>
+            <div class="stat-name">Total Documents</div>
+        </div>
+        <div class="stat-card" style="flex: 1;">
+            <div class="stat-number" style="color: var(--green);">Active</div>
+            <div class="stat-name">Vector DB Status</div>
+        </div>
+    </div>
+
+    <!-- Upload Area -->
+    <div id="drop-zone" class="drop-zone" ondragover="handleDragOver(event)" ondragleave="handleDragLeave(event)"
+        ondrop="handleDrop(event)">
+        <div class="drop-zone-icon">📄</div>
+        <h3>Upload Documents</h3>
+        <p>Drag & Drop TXT or MD files here</p>
+        <p style="font-size: 0.8rem; margin-top: 0.5rem;">or click to browse</p>
+        <input type="file" id="file-input" style="display: none;" onchange="handleFileSelect(this)">
+    </div>
+
+    <!-- Status Message -->
+    <div id="upload-status" style="margin-top: 1rem; text-align: center; display: none;"></div>
+</div>
+
+<script>
+    const dropZone = document.getElementById('drop-zone');
+    const fileInput = document.getElementById('file-input');
+
+    dropZone.addEventListener('click', () => fileInput.click());
+
+    function handleDragOver(e) {
+        e.preventDefault();
+        dropZone.classList.add('active');
+    }
+
+    function handleDragLeave(e) {
+        e.preventDefault();
+        dropZone.classList.remove('active');
+    }
+
+    function handleDrop(e) {
+        e.preventDefault();
+        dropZone.classList.remove('active');
+        const files = e.dataTransfer.files;
+        if (files.length > 0) uploadFile(files[0]);
+    }
+
+    function handleFileSelect(input) {
+        if (input.files.length > 0) uploadFile(input.files[0]);
+    }
+
+    async function uploadFile(file) {
+        const formData = new FormData();
+        formData.append('file', file);
+
+        const status = document.getElementById('upload-status');
+        status.style.display = 'block';
+        status.innerHTML = `<span style="color: var(--yellow);">⏳ Uploading ${file.name}...</span>`;
+
+        try {
+            const response = await fetch('/api/knowledge/upload', {
+                method: 'POST',
+                body: formData
+            });
+            const result = await response.json();
+
+            if (response.ok) {
+                status.innerHTML = `<span style="color: var(--green);">✅ Uploaded successfully! ID: ${result.doc_id}</span>`;
+                setTimeout(() => location.reload(), 1500);
+            } else {
+                status.innerHTML = `<span style="color: var(--red);">❌ Error: ${result.error}</span>`;
+            }
+        } catch (error) {
+            status.innerHTML = `<span style="color: var(--red);">❌ Upload failed: ${error}</span>`;
+        }
+    }
+</script>
+{% endblock %}

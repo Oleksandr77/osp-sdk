@@ -1,0 +1,779 @@
+<!DOCTYPE html>
+<html lang="uk">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Antigravity AI Pro</title>
+
+    <!-- 1. Tailwind CSS (for modern utility classes) -->
+    <script src="https://cdn.tailwindcss.com"></script>
+
+    <!-- 2. FontAwesome (for icons) -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+    <!-- 3. Google Fonts (Inter) -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&display=swap" rel="stylesheet">
+
+    <style>
+        /* Custom Overrides for Glassmorphism & Animations */
+        body {
+            font-family: 'Inter', sans-serif;
+            background: #f8fafc;
+            /* Slate 50 - Paper White */
+            color: #1e293b;
+            /* Slate 800 - Ink */
+            /* Daylight Gradient Background */
+            background-image:
+                radial-gradient(at 0% 0%, hsla(210, 100%, 96%, 1) 0, transparent 50%),
+                radial-gradient(at 50% 100%, hsla(260, 100%, 97%, 1) 0, transparent 50%),
+                radial-gradient(at 100% 0%, hsla(300, 100%, 96%, 1) 0, transparent 50%);
+            background-attachment: fixed;
+            min-height: 100vh;
+        }
+
+        /* Enhanced Glassmorphism - Frosted Glass (Light) */
+        .card-glass {
+            background: rgba(255, 255, 255, 0.70);
+            /* High opacity white */
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            border: 1px solid rgba(255, 255, 255, 0.8);
+            /* Crisp white border */
+            box-shadow: 0 10px 40px -10px rgba(148, 163, 184, 0.3);
+            /* Soft blue-grey shadow */
+        }
+
+        .card-glass:hover {
+            background: rgba(255, 255, 255, 0.85);
+            border-color: #fff;
+            box-shadow: 0 20px 50px -12px rgba(148, 163, 184, 0.4);
+        }
+
+        /* Navigation Active State */
+        .nav-btn-active {
+            background: #ffffff;
+            color: #4f46e5;
+            /* Indigo 600 */
+            border: 1px solid rgba(226, 232, 240, 1);
+            /* Slate 200 */
+            box-shadow: 0 4px 12px rgba(148, 163, 184, 0.15);
+        }
+
+        /* Animations */
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(10px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .animate-fade-in {
+            animation: fadeIn 0.5s ease-out forwards;
+        }
+
+        /* Scrollbar */
+        ::-webkit-scrollbar {
+            width: 8px;
+        }
+
+        ::-webkit-scrollbar-track {
+            background: transparent;
+        }
+
+        ::-webkit-scrollbar-thumb {
+            background: #cbd5e1;
+            border-radius: 4px;
+        }
+
+        ::-webkit-scrollbar-thumb:hover {
+            background: #94a3b8;
+        }
+
+        /* Utility */
+        .text-glow {
+            text-shadow: 0 0 20px rgba(79, 70, 229, 0.2);
+        }
+    </style>
+</head>
+
+<body class="selection:bg-indigo-100 selection:text-indigo-800 antialiased">
+    <!-- Loading overlay to prevent FOUC -->
+    <div id="loading"
+        class="fixed inset-0 flex flex-col items-center justify-center bg-slate-50 z-50 transition-opacity duration-500">
+        <div class="animate-spin rounded-full h-16 w-16 border-t-4 border-b-4 border-indigo-600 mb-4 shadow-lg"></div>
+        <h1 class="text-2xl font-bold text-slate-800 tracking-widest">AMADEQ</h1>
+        <p class="text-slate-400 text-sm tracking-wider">SYSTEM INITIALIZATION</p>
+    </div>
+
+    <!-- MAIN APP CONTAINER -->
+    <div class="container mx-auto px-6 py-8 max-w-7xl hidden" id="main-container">
+
+        <!-- HEADER -->
+        <header class="flex flex-col lg:flex-row justify-between items-center mb-12 gap-6">
+
+            <!-- BRANDING -->
+            <div class="flex items-center gap-4">
+                <div class="relative group">
+                    <div
+                        class="absolute -inset-1 bg-gradient-to-r from-indigo-500 to-purple-500 rounded-lg blur opacity-30 group-hover:opacity-60 transition duration-200">
+                    </div>
+                    <div class="relative bg-white p-3 rounded-lg ring-1 ring-slate-200">
+                        <i class="fas fa-robot text-3xl text-indigo-700"></i>
+                    </div>
+                </div>
+                <div>
+                    <h1 class="text-4xl font-extrabold text-slate-900 tracking-tight">
+                        AMADEQ
+                    </h1>
+                    <div class="flex items-center gap-3 mt-1">
+                        <span
+                            class="px-2 py-0.5 rounded text-[10px] font-bold bg-indigo-100 text-indigo-800 border border-indigo-200 tracking-wider">PRO
+                            v5.1</span>
+                        <span
+                            class="flex items-center gap-1.5 px-2 py-0.5 rounded text-[10px] font-bold bg-green-100 text-green-800 border border-green-200">
+                            <span class="relative flex h-2 w-2">
+                                <span
+                                    class="animate-ping absolute inline-flex h-full w-full rounded-full bg-green-500 opacity-75"></span>
+                                <span class="relative inline-flex rounded-full h-2 w-2 bg-green-600"></span>
+                            </span>
+                            SYSTEM ONLINE
+                        </span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- NAVIGATION -->
+            <nav
+                class="flex items-center gap-2 bg-white/60 p-1.5 rounded-xl border border-white/40 backdrop-blur-xl shadow-sm">
+                <button onclick="switchTab('dashboard')"
+                    class="tab-btn nav-btn-active px-5 py-2.5 rounded-lg text-sm font-semibold transition-all duration-300 flex items-center gap-2">
+                    <i class="fas fa-chart-pie"></i> Dashboard
+                </button>
+                <button onclick="switchTab('search')"
+                    class="tab-btn px-5 py-2.5 rounded-lg text-sm font-semibold text-slate-500 hover:text-indigo-600 hover:bg-white transition-all duration-300 flex items-center gap-2">
+                    <i class="fas fa-search"></i> Deep Research
+                </button>
+                <button onclick="switchTab('brain')"
+                    class="tab-btn px-5 py-2.5 rounded-lg text-sm font-semibold text-slate-500 hover:text-indigo-600 hover:bg-white transition-all duration-300 flex items-center gap-2">
+                    <i class="fas fa-brain"></i> Knowledge Base
+                </button>
+                <button onclick="switchTab('logs')"
+                    class="tab-btn px-5 py-2.5 rounded-lg text-sm font-semibold text-slate-500 hover:text-indigo-600 hover:bg-white transition-all duration-300 flex items-center gap-2">
+                    <i class="fas fa-terminal"></i> Logs
+                </button>
+            </nav>
+        </header>
+
+        <!-- DASHBOARD TAB -->
+        <div id="tab-dashboard" class="space-y-6 animate-fade-in">
+            <!-- Stats Cards -->
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+                <!-- Stat 1 -->
+                <div class="card-glass p-6 rounded-2xl relative overflow-hidden group">
+                    <div class="absolute right-0 top-0 p-4 opacity-10 group-hover:opacity-20 transition">
+                        <i class="fas fa-comments text-6xl text-green-600"></i>
+                    </div>
+                    <h3 class="text-slate-600 text-sm font-bold uppercase tracking-wider mb-2">Active Channels</h3>
+                    <p class="text-4xl font-extrabold text-slate-900" id="stat-chats">2</p>
+                    <div class="mt-4 flex items-center gap-2 text-xs text-green-700 font-bold">
+                        <span class="bg-green-100 px-2 py-1 rounded">+1 new</span>
+                    </div>
+                </div>
+
+                <!-- Stat 2 -->
+                <div class="card-glass p-6 rounded-2xl relative overflow-hidden group">
+                    <div class="absolute right-0 top-0 p-4 opacity-10 group-hover:opacity-20 transition">
+                        <i class="fas fa-brain text-6xl text-indigo-600"></i>
+                    </div>
+                    <h3 class="text-slate-600 text-sm font-bold uppercase tracking-wider mb-2">Knowledge Base</h3>
+                    <p class="text-4xl font-extrabold text-slate-900" id="stat-kb">Indexed</p>
+                    <div class="mt-4 flex items-center gap-2 text-xs text-indigo-700 font-bold">
+                        <span class="bg-indigo-100 px-2 py-1 rounded">Search Ready</span>
+                    </div>
+                </div>
+
+                <!-- Stat 3 -->
+                <div class="card-glass p-6 rounded-2xl relative overflow-hidden group">
+                    <div class="absolute right-0 top-0 p-4 opacity-10 group-hover:opacity-20 transition">
+                        <i class="fas fa-server text-6xl text-blue-600"></i>
+                    </div>
+                    <h3 class="text-slate-600 text-sm font-bold uppercase tracking-wider mb-2">System Status</h3>
+                    <p class="text-4xl font-extrabold text-blue-700">Running</p>
+                    <div class="mt-4 text-xs text-slate-600 font-bold">
+                        Mem: 24% | CPU: 12%
+                    </div>
+                </div>
+            </div>
+
+            <!-- Quick Logs / Activity -->
+            <div class="card-glass p-6 rounded-2xl">
+                <h3 class="text-lg font-bold text-slate-900 mb-4"><i
+                        class="fas fa-history mr-2 text-slate-500"></i>Recent
+                    Activity</h3>
+                <div class="space-y-3" id="quick-logs">
+                    <div
+                        class="flex items-center gap-3 text-sm text-slate-700 p-3 hover:bg-slate-50 rounded-lg transition border border-transparent hover:border-slate-100 font-medium">
+                        <span class="text-xs text-slate-500 font-mono">12:30</span>
+                        <i class="fas fa-check-circle text-green-600"></i>
+                        <span>System started successfully.</span>
+                    </div>
+                    <!-- More logs... -->
+                </div>
+            </div>
+        </div>
+
+        <!-- BRAIN TAB (NEW) -->
+        <div id="tab-brain" class="hidden space-y-6 animate-fade-in opacity-0">
+            <div class="card-glass p-8 rounded-2xl text-center md:text-left relative overflow-hidden">
+                <div class="absolute top-0 right-0 -mt-10 -mr-10 opacity-10 hidden md:block">
+                    <i class="fas fa-network-wired text-9xl text-indigo-600 blur-sm"></i>
+                </div>
+
+                <h2 class="text-3xl font-bold text-slate-800 mb-2">Цифровий Мозок</h2>
+                <p class="text-slate-500 mb-8 max-w-xl">
+                    Миттєвий пошук по всім збереженим знанням: відео, статті, голосові нотатки.
+                </p>
+
+                <div class="relative max-w-2xl">
+                    <div class="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none">
+                        <i class="fas fa-search text-slate-400"></i>
+                    </div>
+                    <input type="text" id="kb-search-input"
+                        class="w-full pl-12 pr-32 py-4 bg-white border border-slate-200 rounded-xl text-slate-800 placeholder-slate-400 focus:ring-2 focus:ring-indigo-500 focus:border-transparent transition shadow-sm"
+                        placeholder="Що ви хочете знайти? (напр. 'біткоїн прогноз')"
+                        onkeypress="if(event.key === 'Enter') searchKB()">
+
+                    <button onclick="searchKB()"
+                        class="absolute right-2 top-2 bottom-2 bg-indigo-600 hover:bg-indigo-700 text-white px-6 rounded-lg font-medium transition shadow-lg shadow-indigo-200">
+                        Знайти
+                    </button>
+                </div>
+            </div>
+
+            <div id="kb-results" class="grid grid-cols-1 gap-4">
+                <!-- Placeholder State -->
+                <div class="text-center py-20 text-slate-400">
+                    <i class="fas fa-brain text-7xl mb-6 opacity-30 animate-pulse"></i>
+                    <p class="text-lg">База знань готова до пошуку.</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Monitoring Tab -->
+        <div id="tab-monitoring" class="hidden">
+            <div class="card">
+                <h2>Активні канали</h2>
+                <ul class="chat-list" id="chat-list">
+                    <li class="chat-item"><span>Завантаження...</span></li>
+                </ul>
+            </div>
+        </div>
+
+        <!-- Search Tab (PRO) -->
+        <div id="tab-search" class="hidden animate-fade-in space-y-8">
+
+            <!-- Hero Section for Search -->
+            <div class="text-center space-y-2 mt-8">
+                <div class="inline-block p-3 rounded-full bg-indigo-50 mb-2 border border-indigo-100">
+                    <i class="fas fa-search-location text-3xl text-indigo-600"></i>
+                </div>
+                <h2
+                    class="text-4xl font-extrabold text-transparent bg-clip-text bg-gradient-to-r from-indigo-600 to-cyan-600">
+                    Глобальний Аналіз
+                </h2>
+                <p class="text-slate-500 text-lg max-w-2xl mx-auto">
+                    Використовуйте штучний інтелект для глибокого пошуку та аналізу інформації з YouTube, Reddit та
+                    Вебу.
+                </p>
+            </div>
+
+            <!-- Main Search Controls Card -->
+            <div
+                class="card-glass p-8 rounded-3xl border border-slate-200 relative overflow-hidden max-w-4xl mx-auto shadow-xl shadow-indigo-100">
+                <!-- Decorative blurred blob -->
+                <div
+                    class="absolute top-0 right-0 -mr-20 -mt-20 w-64 h-64 bg-indigo-400 rounded-full mix-blend-multiply filter blur-[80px] opacity-10 pointer-events-none">
+                </div>
+                <div
+                    class="absolute bottom-0 left-0 -ml-20 -mb-20 w-64 h-64 bg-cyan-400 rounded-full mix-blend-multiply filter blur-[80px] opacity-10 pointer-events-none">
+                </div>
+
+                <div class="flex flex-col gap-8 relative z-10">
+
+                    <!-- Search Input -->
+                    <div class="group">
+                        <label class="block text-xs font-bold text-slate-500 uppercase tracking-widest mb-3 ml-1">
+                            <i class="fas fa-keyboard mr-1"></i> Пошуковий Запит
+                        </label>
+                        <div class="relative group-focus-within:scale-[1.01] transition-transform duration-300">
+                            <div class="absolute inset-y-0 left-0 pl-5 flex items-center pointer-events-none">
+                                <i
+                                    class="fas fa-search text-slate-400 group-focus-within:text-indigo-600 transition text-lg"></i>
+                            </div>
+                            <input type="text" id="search-query"
+                                class="w-full pl-12 pr-4 py-5 bg-white border border-slate-200 rounded-2xl text-slate-800 placeholder-slate-400 focus:ring-2 focus:ring-indigo-500 focus:border-transparent transition-all shadow-sm text-lg outline-none"
+                                placeholder="Введіть тему, посилання або ключові слова...">
+                            <div class="absolute inset-y-0 right-0 pr-4 flex items-center pointer-events-none">
+                                <span
+                                    class="text-slate-400 text-xs border border-slate-200 px-2 py-1 rounded bg-slate-50">Enter</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Filters Grid -->
+                    <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+                        <!-- Source Filter -->
+                        <div>
+                            <label
+                                class="block text-xs font-bold text-slate-500 uppercase tracking-widest mb-3 ml-1">Джерело</label>
+                            <div class="relative">
+                                <select id="filter-source" onchange="toggleFilters()"
+                                    class="bg-slate-50 border border-slate-200 text-slate-700 text-sm rounded-lg focus:ring-indigo-500 focus:border-indigo-500 block w-full p-2.5">
+                                    <option value="youtube">🎥 YouTube</option>
+                                    <option value="web">🌐 Web / News</option>
+                                    <option value="kb">🧠 Knowledge Base</option>
+                                    <option value="duckduckgo_news">📰 News</option>
+                                    <option value="reddit">🗣️ Reddit</option>
+                                    <option value="academic">🎓 Science (PDF)</option>
+                                </select>
+                                <div
+                                    class="absolute inset-y-0 right-0 flex items-center px-4 pointer-events-none text-slate-400">
+                                    <i class="fas fa-chevron-down text-xs"></i>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Period Filter -->
+                        <div>
+                            <label
+                                class="block text-xs font-bold text-slate-500 uppercase tracking-widest mb-3 ml-1">Період</label>
+                            <div class="relative">
+                                <select id="filter-period"
+                                    class="w-full pl-4 pr-10 py-4 bg-white border border-slate-200 rounded-xl text-slate-700 appearance-none focus:ring-2 focus:ring-indigo-500 focus:border-transparent transition outline-none cursor-pointer shadow-sm">
+                                    <option value="any">📅 Будь-який час</option>
+                                    <option value="today">📅 Сьогодні</option>
+                                    <option value="week">📅 Цей тиждень</option>
+                                    <option value="month">📅 Цей місяць</option>
+                                </select>
+                                <div
+                                    class="absolute inset-y-0 right-0 flex items-center px-4 pointer-events-none text-slate-400">
+                                    <i class="fas fa-chevron-down text-xs"></i>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Sort Filter -->
+                        <div>
+                            <label
+                                class="block text-xs font-bold text-slate-500 uppercase tracking-widest mb-3 ml-1">Сортування</label>
+                            <div class="relative">
+                                <select id="filter-sort"
+                                    class="w-full pl-4 pr-10 py-4 bg-white border border-slate-200 rounded-xl text-slate-700 appearance-none focus:ring-2 focus:ring-indigo-500 focus:border-transparent transition outline-none cursor-pointer shadow-sm">
+                                    <option value="relevance">🎯 Релевантність</option>
+                                    <option value="date">🕒 Нові спочатку</option>
+                                    <option value="views">🔥 Популярні</option>
+                                </select>
+                                <div
+                                    class="absolute inset-y-0 right-0 flex items-center px-4 pointer-events-none text-slate-400">
+                                    <i class="fas fa-chevron-down text-xs"></i>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Action Button -->
+                    <button onclick="performSearch()"
+                        class="w-full py-5 bg-gradient-to-r from-indigo-600 via-indigo-600 to-purple-600 hover:from-indigo-500 hover:to-purple-500 text-white font-bold rounded-2xl shadow-xl shadow-indigo-300 transform transition hover:-translate-y-1 active:scale-95 flex items-center justify-center gap-3 text-lg group">
+                        <span class="text-2xl group-hover:scale-110 transition">🚀</span>
+                        <span>Почати Глобальний Аналіз</span>
+                    </button>
+
+                </div>
+            </div>
+
+            <div id="search-results" class="space-y-4 min-h-[200px] max-w-6xl mx-auto">
+                <div class="flex flex-col items-center justify-center h-48 text-slate-400/50">
+                    <div class="p-6 rounded-full bg-white border border-slate-200 mb-4 animate-pulse shadow-sm">
+                        <i class="fas fa-satellite-dish text-4xl text-indigo-200"></i>
+                    </div>
+                    <p class="text-sm uppercase tracking-widest text-slate-400">Система готова до сканування</p>
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+    <!-- Analysis Modal -->
+    <div id="analysis-modal"
+        style="display:none; position:fixed; top:0; left:0; right:0; bottom:0; background:rgba(0,0,0,0.5); z-index:100; align-items:center; justify-content:center;">
+        <div class="card" style="width:90%; max-width:400px; max-height:90vh; overflow-y:auto;">
+            <h3>🧠 Налаштування Аналізу</h3>
+            <p>Оберіть роль для AI:</p>
+            <div id="analyzer-options" style="display:flex; flex-direction:column; gap:8px;">
+                <!-- Filled via API -->
+            </div>
+
+            <button class="btn-primary" style="width:100%; margin-top:10px; background:#e5e7eb; color:#374151;"
+                onclick="openCreatePromptModal()">
+                ➕ Створити власний промпт
+            </button>
+
+            <br><br>
+            <div style="display:flex; gap:10px;">
+                <button class="btn-primary" style="flex:1; background:#9ca3af;"
+                    onclick="closeModal('analysis-modal')">Скасувати</button>
+                <button class="btn-primary" style="flex:1;" id="confirm-analyze-btn">Почати</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Create Prompt Modal -->
+    <div id="create-prompt-modal"
+        style="display:none; position:fixed; top:0; left:0; right:0; bottom:0; background:rgba(0,0,0,0.5); z-index:101; align-items:center; justify-content:center;">
+        <div class="card" style="width:90%; max-width:400px;">
+            <h3>✨ Створити Роль AI</h3>
+
+            <label>Назва ролі:</label>
+            <input type="text" id="new-prompt-name" class="search-input" placeholder="e.g. Real Estate Expert"
+                style="width:93%; margin-bottom:10px;">
+
+            <label>Іконка (емадзі):</label>
+            <input type="text" id="new-prompt-icon" class="search-input" placeholder="🏠"
+                style="width:93%; margin-bottom:10px;">
+
+            <label>Інструкція для AI (Prompt):</label>
+            <textarea id="new-prompt-text" class="search-input" style="width:93%; height:100px; font-family:sans-serif;"
+                placeholder="Act as a... Analyze the text..."></textarea>
+
+            <div style="display:flex; gap:10px; margin-top:15px;">
+                <button class="btn-primary" style="flex:1; background:#9ca3af;"
+                    onclick="closeModal('create-prompt-modal')">Скасувати</button>
+                <button class="btn-primary" style="flex:1;" onclick="saveNewPrompt()">Зберегти</button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        let currentVideoUrl = "";
+        let availableAnalyzers = [];
+
+        function toggleFilters() {
+            const source = document.getElementById('filter-source').value;
+            const sortSelect = document.getElementById('filter-sort');
+            const periodSelect = document.getElementById('filter-period');
+
+            // YouTube has specific sort/period options that might not apply identically to Web
+            // For now, we keep them visible but could disable them for Web if needed.
+            // DuckDuckGo supports time ranges implicitly in our implementation anyway.
+
+            if (source !== 'youtube') {
+                // Sort by 'views' doesn't exist for Web Search usually
+                sortSelect.style.display = 'none';
+            } else {
+                sortSelect.style.display = 'block';
+            }
+        }
+
+        function switchTab(tabName) {
+            // Hide all tabs
+            document.querySelectorAll('[id^="tab-"]').forEach(el => {
+                el.classList.add('hidden');
+                el.classList.remove('opacity-100');
+                el.classList.add('opacity-0');
+            });
+
+            // Show new tab with fade in
+            const target = document.getElementById('tab-' + tabName);
+            if (target) {
+                target.classList.remove('hidden');
+                setTimeout(() => {
+                    target.classList.remove('opacity-0');
+                    target.classList.add('opacity-100');
+                }, 10);
+            }
+
+            // Update nav buttons (Reset to Light Gray)
+            document.querySelectorAll('.tab-btn').forEach(el => {
+                el.classList.remove('nav-btn-active');
+                el.classList.add('text-slate-500', 'hover:text-indigo-600', 'hover:bg-white');
+            });
+
+            // Highlight active button
+            const activeBtn = document.querySelector(`.tab-btn[onclick="switchTab('${tabName}')"]`);
+            if (activeBtn) {
+                activeBtn.classList.remove('text-slate-500', 'hover:text-indigo-600', 'hover:bg-white');
+                activeBtn.classList.add('nav-btn-active');
+            }
+        }
+
+        async function performSearch() {
+            const query = document.getElementById('search-query').value;
+            const period = document.getElementById('filter-period').value;
+            const sort = document.getElementById('filter-sort').value;
+            const resultsDiv = document.getElementById('search-results');
+
+            if (!query) return;
+
+            const source = document.getElementById('filter-source').value;
+
+            // Adjust waiting message based on source
+            let msg = '📡 Сканування...';
+            if (source === 'youtube') msg = '📡 Сканування YouTube...';
+            else if (source === 'web') msg = '🕵️ Deep Research (Web)...';
+            else if (source === 'kb') msg = '🧠 Searching Digital Brain...';
+
+            resultsDiv.innerHTML = `<p class="text-center text-slate-500 animate-pulse">${msg}</p>`;
+
+            try {
+                let url = `/api/search?q=${encodeURIComponent(query)}&period=${period}&sort=${sort}&source=${source}`;
+
+                // Special endpoint for KB
+                if (source === 'kb') {
+                    url = `/api/kb_search?q=${encodeURIComponent(query)}`;
+                }
+
+                const response = await fetch(url);
+                const results = await response.json();
+
+                if (results.error) {
+                    resultsDiv.innerHTML = `<p style="color:red">Error: ${results.error}</p>`;
+                    return;
+                }
+
+                if (results.length === 0) {
+                    resultsDiv.innerHTML = `<p class="text-center text-slate-500">Нічого не знайдено за вашими критеріями.</p>`;
+                    return;
+                }
+
+                let html = '<div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">';
+
+                results.forEach(item => {
+                    // Normalize fields based on source
+                    const isKB = source === 'kb';
+                    const title = item.title || 'No Title';
+                    const subtitle = isKB ? `Score: ${item.score}` : (item.uploader || 'Web Source');
+                    const meta = isKB ? (item.skill ? `${item.skill} • ${item.direction}` : item.category) : (item.duration_str || 'WEB');
+                    const snippet = isKB ? item.snippet : '';
+                    const icon = isKB ? '🧠' : (source === 'youtube' ? '🎥' : '📄');
+                    const actionBtn = isKB ?
+                        `<button class="w-full py-2.5 bg-green-50 text-green-700 rounded-lg text-sm font-medium" onclick="alert('Viewing functionality pending')">📄 View Document</button>` :
+                        `<button class="w-full py-2.5 bg-indigo-50 hover:bg-indigo-600 text-indigo-600 hover:text-white rounded-lg font-medium transition-all text-sm border border-indigo-100 flex items-center justify-center gap-2 group" onclick="openAnalyzeModal('${item.url}')">
+                            <i class="fas fa-brain group-hover:animate-pulse"></i> Deep Analyze
+                        </button>`;
+
+                    html += `
+                        <div class="card-glass p-0 rounded-2xl overflow-hidden hover:scale-[1.02] transition duration-300 border border-slate-200 flex flex-col h-full bg-white shadow-sm">
+                            <!-- Thumbnail / Header -->
+                            <div class="h-32 bg-slate-100 flex items-center justify-center relative overflow-hidden group">
+                                <span class="text-3xl filter grayscale opacity-30 group-hover:scale-110 transition duration-500">
+                                    ${icon}
+                                </span>
+                                <!-- Overlay -->
+                                <div class="absolute inset-0 bg-gradient-to-t from-slate-200 to-transparent opacity-50"></div>
+                                <div class="absolute bottom-2 right-2 px-2 py-1 bg-white/80 rounded text-xs font-mono text-slate-700 backdrop-blur-sm border border-slate-200">
+                                    ${meta}
+                                </div>
+                            </div>
+                            
+                            <!-- Content -->
+                            <div class="p-5 flex-1 flex flex-col">
+                                <h3 class="font-bold text-slate-800 text-lg mb-2 line-clamp-2 leading-tight">${title}</h3>
+                                
+                                <div class="text-sm text-slate-600 mb-3 line-clamp-3" style="font-size:0.85rem">
+                                    ${snippet}
+                                </div>
+
+                                <div class="flex items-center gap-2 text-xs text-slate-500 mb-4 mt-auto">
+                                    <span class="flex items-center gap-1"><i class="fas fa-info-circle text-slate-400"></i> ${subtitle}</span>
+                                </div>
+                                
+                                ${actionBtn}
+                            </div>
+                        </div>
+                    `;
+                });
+                html += '</div>';
+                resultsDiv.innerHTML = html;
+
+            } catch (e) {
+                console.error(e);
+                resultsDiv.innerHTML = `<p style="color:red">Connection Error</p>`;
+            }
+        }
+
+        async function loadAnalyzers() {
+            try {
+                const res = await fetch('/api/analyzers');
+                availableAnalyzers = await res.json();
+                renderAnalyzerList();
+            } catch (e) { console.error("Analyzers load failed", e); }
+        }
+
+        function renderAnalyzerList() {
+            const container = document.getElementById('analyzer-options');
+            if (availableAnalyzers.length === 0) {
+                container.innerHTML = "<p>No prompts available.</p>";
+                return;
+            }
+            container.innerHTML = availableAnalyzers.map((a, idx) => `
+                <label style="display:flex; align-items:center; padding:10px; border:1px solid #eee; border-radius:8px; cursor:pointer;">
+                    <input type="radio" name="analyzer" value="${a.id}" ${idx === 0 ? 'checked' : ''} style="margin-right:10px;">
+                    <b>${a.icon} ${a.name}</b>
+                </label>
+            `).join('');
+        }
+
+        function openAnalyzeModal(url) {
+            currentVideoUrl = url;
+            document.getElementById('analysis-modal').style.display = 'flex';
+            document.getElementById('confirm-analyze-btn').onclick = () => runAnalysis();
+            loadAnalyzers(); // Refresh list
+        }
+
+        function openCreatePromptModal() {
+            document.getElementById('create-prompt-modal').style.display = 'flex';
+        }
+
+        function closeModal(id) {
+            const el = document.getElementById(id);
+            if (el) el.style.display = 'none';
+        }
+
+        async function saveNewPrompt() {
+            const name = document.getElementById('new-prompt-name').value;
+            const icon = document.getElementById('new-prompt-icon').value || "🤖";
+            const text = document.getElementById('new-prompt-text').value;
+
+            if (!name || !text) {
+                alert("Назва та текст промпту обов'язкові!");
+                return;
+            }
+
+            const id = name.toLowerCase().replace(/\s+/g, '_') + '_' + Date.now();
+
+            try {
+                const res = await fetch('/api/analyzers', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ id, name, icon, text })
+                });
+
+                if (res.ok) {
+                    closeModal('create-prompt-modal');
+                    loadAnalyzers(); // Refresh list
+                    alert("✅ Роль створено успішно!");
+                } else {
+                    alert("Помилка при збереженні.");
+                }
+            } catch (e) {
+                console.error(e);
+                alert("Помилка з'єднання.");
+            }
+        }
+
+        async function runAnalysis() {
+            closeModal('analysis-modal');
+            const template = document.querySelector('input[name="analyzer"]:checked').value;
+            const resultsDiv = document.getElementById('search-results');
+
+            // Scroll to top
+            resultsDiv.scrollIntoView({ behavior: "smooth" });
+            resultsDiv.innerHTML = `
+                <div style="text-align:center; padding:40px;">
+                    <h2>🧠 AI Працює...</h2>
+                    <p>Застосовую шаблон: <b>${template.toUpperCase()}</b></p>
+                    <div style="margin-top:20px;">Аналіз відео... транскрипція... генерація звіту...</div>
+                </div>
+            `;
+
+            try {
+                const response = await fetch(`/api/analyze?url=${encodeURIComponent(currentVideoUrl)}&template=${template}`);
+                const data = await response.json();
+
+                if (data.error) {
+                    resultsDiv.innerHTML = `<p style="color:red">Error: ${data.error}</p>`;
+                    return;
+                }
+
+                resultsDiv.innerHTML = `
+                    <div class="card" style="border-left: 5px solid var(--primary);">
+                        <h2 style="color:var(--primary)">${data.title}</h2>
+                        <div style="font-size:12px; color:#6b7280; margin-bottom:20px;">
+                            <span>⏱ ${data.duration}</span> | 
+                            <span>📂 Template: ${data.template_used}</span>
+                        </div>
+                        
+                        <div style="background:#f9fafb; padding:15px; border-radius:8px; font-family:sans-serif; line-height:1.6;">
+                            ${marked.parse(data.summary)} 
+                        </div>
+                        
+                        <br>
+                        <button class="btn-primary" onclick="performSearch()">🔙 New Search</button>
+                    </div>
+                `;
+
+            } catch (e) {
+                console.error(e);
+                resultsDiv.innerHTML = `<p style="color:red">Analysis Error</p>`;
+            }
+        }
+
+        // Add proper markdown support via CDN
+        const script = document.createElement('script');
+        script.src = "https://cdn.jsdelivr.net/npm/marked/marked.min.js";
+        document.head.appendChild(script);
+
+        // API Data Loaders (Chats, Stats)
+        async function loadChats() {
+            try {
+                const response = await fetch('/api/chats');
+                const chats = await response.json();
+                const list = document.getElementById('chat-list');
+                if (!chats || chats.length === 0) { list.innerHTML = '<li class="chat-item">Немає активних чатів</li>'; return; }
+                list.innerHTML = chats.map(c => `
+                    <li class="chat-item">
+                        <span>${c.name}</span>
+                        <label class="toggle-switch">
+                            <input type="checkbox" ${c.active ? 'checked' : ''} class="toggle-input">
+                            <span class="slider"></span>
+                        </label>
+                    </li>
+                `).join('');
+            } catch (e) { console.error(e); }
+        }
+
+        async function loadStats() {
+            try {
+                const response = await fetch('/api/status');
+                const data = await response.json();
+                if (data.stats) document.getElementById('stat-processed').innerText = data.stats.processed_msgs;
+            } catch (e) { }
+        }
+
+        // Initial load
+        window.onload = function () {
+            document.getElementById('loading').style.display = 'none';
+            document.getElementById('main-container').style.display = 'block';
+
+            if (document.getElementById('tab-monitoring')) {
+                loadChats();
+                loadStats();
+                setInterval(loadStats, 5000);
+            }
+
+            // Warning fallbacks
+            setTimeout(() => {
+                const w = document.getElementById('ngrok-warning');
+                if (w) w.style.display = 'none';
+            }, 500);
+        }
+    </script>
+</body>
+
+</html>

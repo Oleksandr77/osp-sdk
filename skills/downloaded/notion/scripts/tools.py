@@ -1,0 +1,1 @@
+def execute(args): return {'message': 'Hello from installed skill!'}

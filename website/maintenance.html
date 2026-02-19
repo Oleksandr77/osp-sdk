@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Amadeq — Protocol Maintenance</title>
+    <meta name="description" content="Amadeq Protocol is currently undergoing scheduled maintenance and upgrades.">
+    <link rel="stylesheet" href="style.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap"
+        rel="stylesheet">
+    <style>
+        body {
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            text-align: center;
+            background: radial-gradient(circle at center, var(--surface2) 0%, var(--bg) 100%);
+        }
+
+        .maintenance-container {
+            padding: 40px;
+            max-width: 600px;
+            z-index: 10;
+        }
+
+        h1 {
+            font-size: 3rem;
+            margin-bottom: 1rem;
+            background: var(--gradient);
+            -webkit-background-clip: text;
+            background-clip: text;
+            -webkit-text-fill-color: transparent;
+            font-weight: 700;
+        }
+
+        p {
+            font-size: 1.2rem;
+            color: var(--text-dim);
+            margin-bottom: 2rem;
+        }
+
+        .contact-btn {
+            display: inline-block;
+            padding: 12px 24px;
+            background: var(--surface2);
+            border: 1px solid var(--border);
+            border-radius: var(--radius);
+            color: var(--text);
+            text-decoration: none;
+            transition: all 0.3s ease;
+            font-family: var(--font);
+            font-weight: 500;
+        }
+
+        .contact-btn:hover {
+            border-color: var(--accent);
+            box-shadow: 0 0 15px var(--accent-glow);
+            transform: translateY(-2px);
+        }
+    </style>
+</head>
+
+<body>
+    <div id="particles"></div>
+
+    <div class="maintenance-container reveal revealed">
+        <h1>Amadeq</h1>
+        <p>The protocol is currently in <strong>stealth development mode</strong>.<br>
+            We are upgrading our registry and delivery contracts.</p>
+
+        <a href="mailto:contact@amadeq.org" class="contact-btn">Contact Team</a>
+    </div>
+
+    <script>
+        // Simple particle effect kept from original site for brand consistency
+        document.addEventListener('DOMContentLoaded', () => {
+            // Re-use existing particle logic if available in external script, 
+            // otherwise just keep the static background.
+            // (Assuming particle logic was inline in original index.html, 
+            //  we might need to extract it to a js file later if we want it here too,
+            //  but for now a static clean look is better than broken JS).
+        });
+    </script>
+</body>
+
+</html>

@@ -1,0 +1,22 @@
+version: '3.8'
+
+services:
+  osp-server:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: osp-server
+    ports:
+      - "127.0.0.1:8000:8000"
+
+    environment:
+      - HOST=0.0.0.0
+      - PORT=8000
+      - OSP_CORS_ORIGINS=https://api.amadeq.org,https://amadeq.org
+      - OSP_ADMIN_KEY=${OSP_ADMIN_KEY:?Set OSP_ADMIN_KEY in .env}
+      - OSP_SIGNATURE_ENFORCE=false
+      # Add other environment variables here
+    restart: unless-stopped
+    volumes:
+      - ./data:/app/data # Persist data if needed
+      - ./dashboard:/app/dashboard # Apply dashboard updates immediately

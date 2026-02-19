@@ -1,0 +1,12 @@
+fastapi>=0.100.0
+uvicorn[standard]>=0.20.0
+pydantic>=2.5.0
+requests
+jinja2
+python-multipart
+aiofiles
+httpx
+pytest
+cachetools
+prometheus-client
+cryptography>=42.0.0

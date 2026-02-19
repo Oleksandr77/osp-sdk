@@ -1,0 +1,16 @@
+{
+    "name": "ASP — Amadeq Skill Protocol",
+    "short_name": "ASP",
+    "start_url": "/",
+    "display": "standalone",
+    "background_color": "#06060b",
+    "theme_color": "#7c6cf7",
+    "description": "Build AI skills in 3 lines of code. Intelligent routing, built-in safety, zero config.",
+    "icons": [
+        {
+            "src": "/favicon.svg",
+            "sizes": "any",
+            "type": "image/svg+xml"
+        }
+    ]
+}

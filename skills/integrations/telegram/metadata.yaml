@@ -1,0 +1,23 @@
+name: "Telegram Messenger"
+version: "1.0.0"
+description: "Sends messages to Telegram users."
+arguments:
+  - name: chat_id
+    type: integer
+    description: "The Telegram Chat ID to send the message to."
+    required: true
+  - name: text
+    type: string
+    description: "The content of the message."
+    required: true
+  - name: parse_mode
+    type: string
+    description: "Formatting mode: 'Markdown' or 'HTML' (default: Markdown)."
+    required: false
+triggers:
+  - "send telegram"
+  - "notify user"
+  - "remind me"
+execution:
+  python: "scripts.tools"
+  function: "execute"

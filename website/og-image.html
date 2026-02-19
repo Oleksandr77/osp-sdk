@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>OG Image — ASP</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            width: 1200px;
+            height: 630px;
+            background: linear-gradient(135deg, #06060b 0%, #0c0c15 50%, #111120 100%);
+            font-family: system-ui, -apple-system, sans-serif;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .glow {
+            position: absolute;
+            top: -100px;
+            right: -100px;
+            width: 500px;
+            height: 500px;
+            background: radial-gradient(circle, rgba(124, 108, 247, 0.25), transparent 70%);
+        }
+
+        .glow2 {
+            position: absolute;
+            bottom: -150px;
+            left: -100px;
+            width: 400px;
+            height: 400px;
+            background: radial-gradient(circle, rgba(232, 121, 222, 0.15), transparent 70%);
+        }
+
+        .content {
+            text-align: center;
+            position: relative;
+            z-index: 1;
+        }
+
+        .badge {
+            display: inline-block;
+            padding: 8px 24px;
+            background: rgba(124, 108, 247, 0.15);
+            border: 1px solid rgba(124, 108, 247, 0.3);
+            border-radius: 100px;
+            color: #9d93ff;
+            font-size: 18px;
+            font-weight: 500;
+            margin-bottom: 30px;
+        }
+
+        h1 {
+            font-size: 96px;
+            font-weight: 900;
+            color: white;
+            letter-spacing: -4px;
+            margin-bottom: 10px;
+        }
+
+        h1 span {
+            background: linear-gradient(135deg, #7c6cf7, #b794f4, #e879de);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        h2 {
+            font-size: 32px;
+            font-weight: 600;
+            color: #8888aa;
+            margin-bottom: 20px;
+        }
+
+        .tagline {
+            font-size: 24px;
+            color: #555570;
+        }
+
+        .tagline strong {
+            color: #00d4aa;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="glow"></div>
+    <div class="glow2"></div>
+    <div class="content">
+        <div class="badge">amadeq.org</div>
+        <h1>⚡ <span>ASP</span></h1>
+        <h2>Amadeq Skill Protocol</h2>
+        <p class="tagline">AI skills in <strong>3 lines</strong> of code</p>
+    </div>
+</body>
+
+</html>

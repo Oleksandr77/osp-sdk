@@ -1,0 +1,27 @@
+[build-system]
+requires = ["setuptools>=61.0"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "osp-core"
+version = "0.1.0"
+description = "Core SDK for the Open Skills Protocol (OSP)"
+readme = "README.md"
+authors = [
+  { name = "Antigravity Team", email = "dev@antigravity.ai" },
+]
+classifiers = [
+    "Programming Language :: Python :: 3",
+    "License :: OSI Approved :: MIT License",
+    "Operating System :: OS Independent",
+]
+requires-python = ">=3.9"
+dependencies = [
+    "cryptography>=3.4.7",
+    "pydantic>=1.8.0",
+    "requests>=2.25.1"
+]
+
+[project.urls]
+"Homepage" = "https://github.com/antigravity/osp-core"
+"Bug Tracker" = "https://github.com/antigravity/osp-core/issues"

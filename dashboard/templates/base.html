@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block title %}Dashboard{% endblock %} — AMADEQ ASP</title>
+    <meta name="description" content="Amadeq Skill Protocol — Intelligent AI Skill Routing Dashboard">
+    <link rel="icon" type="image/svg+xml"
+        href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>⚡</text></svg>">
+    <link rel="stylesheet" href="/static/style.css">
+    <script src="https://unpkg.com/htmx.org@1.9.10"></script>
+</head>
+
+<body>
+    <!-- Network Graph Canvas Background -->
+    <canvas id="bg-canvas"
+        style="position:fixed;top:0;left:0;width:100vw;height:100vh;z-index:0;pointer-events:none;opacity:0.6;"></canvas>
+
+    <div class="container">
+        <header>
+            <a href="/" class="logo">
+                <span class="logo-icon">⚡</span>
+                <h1>ASP <span class="logo-sub">AMADEQ SKILL PROTOCOL</span></h1>
+            </a>
+
+            <nav>
+                <a href="/" class="{% block nav_dashboard %}{% endblock %}">Dashboard</a>
+                <a href="/chat" class="{% block nav_chat %}{% endblock %}">Live Chat</a>
+                <a href="/builder" class="{% block nav_builder %}{% endblock %}">Skill Builder</a>
+                <a href="/knowledge" class="{% block nav_knowledge %}{% endblock %}">Knowledge</a>
+                <a href="/settings" class="{% block nav_settings %}{% endblock %}">⚙️</a>
+            </nav>
+        </header>
+
+        <main>
+            {% block content %}{% endblock %}
+        </main>
+
+        <footer class="footer">
+            Amadeq Skill Protocol v1.0.0 — Open Source AI Routing Infrastructure
+        </footer>
+    </div>
+
+    <!-- Network graph animation -->
+    <script>
+        (function () {
+            const canvas = document.getElementById('bg-canvas');
+            if (!canvas) return;
+            const ctx = canvas.getContext('2d');
+            let w, h, nodes = [], connections = [];
+            const NODE_COUNT = 45;
+            const CONNECT_DIST = 180;
+
+            function resize() {
+                w = canvas.width = window.innerWidth;
+                h = canvas.height = window.innerHeight;
+            }
+
+            function init() {
+                resize();
+                nodes = [];
+                for (let i = 0; i < NODE_COUNT; i++) {
+                    nodes.push({
+                        x: Math.random() * w,
+                        y: Math.random() * h,
+                        vx: (Math.random() - 0.5) * 0.4,
+                        vy: (Math.random() - 0.5) * 0.3,
+                        r: Math.random() * 2 + 1,
+                        pulse: Math.random() * Math.PI * 2,
+                        type: Math.random() > 0.7 ? 'accent' : 'dim'
+                    });
+                }
+            }
+
+            function draw() {
+                ctx.clearRect(0, 0, w, h);
+
+                // Connections
+                for (let i = 0; i < nodes.length; i++) {
+                    for (let j = i + 1; j < nodes.length; j++) {
+                        const dx = nodes[i].x - nodes[j].x;
+                        const dy = nodes[i].y - nodes[j].y;
+                        const dist = Math.sqrt(dx * dx + dy * dy);
+                        if (dist < CONNECT_DIST) {
+                            const alpha = (1 - dist / CONNECT_DIST) * 0.15;
+                            ctx.beginPath();
+                            ctx.moveTo(nodes[i].x, nodes[i].y);
+                            ctx.lineTo(nodes[j].x, nodes[j].y);
+                            ctx.strokeStyle = `rgba(124, 108, 247, ${alpha})`;
+                            ctx.lineWidth = 0.5;
+                            ctx.stroke();
+                        }
+                    }
+                }
+
+                // Nodes
+                nodes.forEach(n => {
+                    n.pulse += 0.02;
+                    const glow = 0.5 + Math.sin(n.pulse) * 0.3;
+                    ctx.beginPath();
+                    ctx.arc(n.x, n.y, n.r, 0, Math.PI * 2);
+                    ctx.fillStyle = n.type === 'accent'
+                        ? `rgba(124, 108, 247, ${glow})`
+                        : `rgba(148, 163, 184, ${glow * 0.4})`;
+                    ctx.fill();
+
+                    // Update position
+                    n.x += n.vx;
+                    n.y += n.vy;
+                    if (n.x < 0 || n.x > w) n.vx *= -1;
+                    if (n.y < 0 || n.y > h) n.vy *= -1;
+                });
+
+                requestAnimationFrame(draw);
+            }
+
+            window.addEventListener('resize', resize);
+            init();
+            draw();
+        })();
+    </script>
+</body>
+
+</html>

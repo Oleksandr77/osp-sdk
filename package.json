@@ -1,0 +1,22 @@
+{
+  "name": "osp-protocol",
+  "version": "1.0.0",
+  "description": "Open Skills Protocol — AI Skill Routing Infrastructure",
+  "main": "index.js",
+  "directories": {
+    "example": "examples",
+    "test": "tests"
+  },
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [
+    "osp",
+    "ai",
+    "skills",
+    "routing"
+  ],
+  "author": "OSP Contributors",
+  "license": "Apache-2.0",
+  "type": "commonjs"
+}

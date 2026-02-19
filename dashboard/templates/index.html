@@ -1,0 +1,245 @@
+{% extends "base.html" %}
+{% block title %}Protocol Dashboard{% endblock %}
+{% block nav_dashboard %}active{% endblock %}
+
+{% block content %}
+<!-- ═══ HERO BANNER ═══ -->
+<div class="hero-banner">
+    <div class="hero-eyebrow">
+        <span class="dot"></span>
+        Amadeq Skill Protocol v1.0 — Live
+    </div>
+    <h2 class="hero-title">
+        Intelligent AI Skill <span class="gradient">Routing Infrastructure</span>
+    </h2>
+    <p class="hero-subtitle">
+        4-stage routing pipeline with built-in safety, cryptographic integrity,
+        graceful degradation, and sub-millisecond latency. Zero config needed.
+    </p>
+</div>
+
+<!-- ═══ ROUTING PIPELINE ═══ -->
+<h3 class="section-title"><span class="icon">⚡</span> Routing <span class="gradient">Pipeline</span></h3>
+<div class="pipeline" style="display: grid; grid-template-columns: repeat(4, 1fr); gap: 0;">
+    <div class="pipeline-stage">
+        <div class="pipeline-node">📥</div>
+        <div class="pipeline-label">Intake</div>
+        <div class="pipeline-desc">Parse request, validate envelope, extract intent</div>
+    </div>
+    <div class="pipeline-stage">
+        <div class="pipeline-node">🧠</div>
+        <div class="pipeline-label">Route</div>
+        <div class="pipeline-desc">TF-IDF + regex + LRU cache skill matching</div>
+    </div>
+    <div class="pipeline-stage">
+        <div class="pipeline-node">🛡️</div>
+        <div class="pipeline-label">Safety</div>
+        <div class="pipeline-desc">ML classifier + anomaly detector + rate limiter</div>
+    </div>
+    <div class="pipeline-stage">
+        <div class="pipeline-node">✅</div>
+        <div class="pipeline-label">Deliver</div>
+        <div class="pipeline-desc">Execute skill, sign response, return envelope</div>
+    </div>
+</div>
+
+<!-- ═══ METRICS ROW ═══ -->
+<div class="grid-4" style="display: grid; grid-template-columns: repeat(4, 1fr); gap: 1rem; margin-bottom: 2rem;">
+    <div class="metric-card">
+        <div class="metric-value accent" id="metric-latency">&lt; 1ms</div>
+        <div class="metric-name">Routing Latency</div>
+    </div>
+    <div class="metric-card">
+        <div class="metric-value green" id="metric-tests">291</div>
+        <div class="metric-name">Tests Passing</div>
+    </div>
+    <div class="metric-card">
+        <div class="metric-value blue" id="metric-skills">{{ skills|length }}</div>
+        <div class="metric-name">Active Skills</div>
+    </div>
+    <div class="metric-card">
+        <div class="metric-value cyan">D0</div>
+        <div class="metric-name">Degradation Level</div>
+    </div>
+</div>
+
+<!-- ═══ CODE PREVIEW + SYSTEM ═══ -->
+<div class="grid-2">
+    <!-- Code Example -->
+    <div>
+        <h3 class="section-title"><span class="icon">{ }</span> Skill <span class="gradient">Definition</span></h3>
+        <div class="code-block">
+            <div class="code-header">
+                <div class="code-dots"><span></span><span></span><span></span></div>
+                <span class="code-filename">hello.py</span>
+            </div>
+            <div class="code-body">
+                <pre><span class="kw">from</span> asp <span class="kw">import</span> skill, serve
+
+<span class="dec">@skill</span>(<span class="str">"greet"</span>, description=<span class="str">"Say hello"</span>)
+<span class="kw">def</span> <span class="fn">greet</span>(name: <span class="fn">str</span>) <span class="op">-></span> <span class="fn">str</span>:
+    <span class="kw">return</span> <span class="str">f"Hello, {name}!"</span>
+
+<span class="fn">serve</span>()  <span class="cm"># → localhost:8080</span></pre>
+            </div>
+        </div>
+
+        <div class="code-block" style="margin-top: 1rem;">
+            <div class="code-header">
+                <div class="code-dots"><span></span><span></span><span></span></div>
+                <span class="code-filename">routing.py</span>
+            </div>
+            <div class="code-body">
+                <pre><span class="cm"># ASP finds the right skill automatically</span>
+<span class="cm"># No manual tool registration needed</span>
+
+result = <span class="fn">asp.route</span>(<span class="str">"Say hi to Alex"</span>)
+<span class="cm"># → Routes to "greet" skill (score: 0.94)</span>
+<span class="cm"># → Safety: SAFE (0.01ms)</span>
+<span class="cm"># → Response signed with ES256</span></pre>
+            </div>
+        </div>
+    </div>
+
+    <!-- System Health + Session -->
+    <div>
+        <h3 class="section-title"><span class="icon">📡</span> System <span class="gradient">Status</span></h3>
+        <div class="card card-glow">
+            <div class="card-label">Active Session</div>
+            <p
+                style="font-size: 0.85rem; font-weight: 600; font-family: 'JetBrains Mono', monospace; word-break: break-all; color: var(--text-secondary); margin: 0.5rem 0 1rem;">
+                {{ session_id }}
+            </p>
+            <a href="/chat" class="btn-primary">⚡ Open Chat Interface</a>
+        </div>
+
+        <div class="card" style="margin-top: 1rem;">
+            <div class="card-label">Protocol Health</div>
+            <div class="stat-row">
+                <span class="stat-label">Server</span>
+                <span class="stat-value stat-online"><span class="status-dot online"></span>Online</span>
+            </div>
+            <div class="stat-row">
+                <span class="stat-label">RAG Memory</span>
+                <span class="stat-value" style="color: var(--green);">Active</span>
+            </div>
+            <div class="stat-row">
+                <span class="stat-label">Protocol</span>
+                <span class="stat-value" style="color: var(--accent-bright);">OSP/1.0</span>
+            </div>
+            <div class="stat-row">
+                <span class="stat-label">Routing Engine</span>
+                <span class="stat-value">4-Stage Pipeline</span>
+            </div>
+            <div class="stat-row">
+                <span class="stat-label">Crypto</span>
+                <span class="stat-value" style="color: var(--blue);">ES256 + EdDSA</span>
+            </div>
+            <div class="stat-row">
+                <span class="stat-label">Degradation</span>
+                <span class="stat-value">
+                    <span class="process-badge degradation">D0 → D3 FSM</span>
+                </span>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- ═══ PROTOCOL FEATURES ═══ -->
+<h3 class="section-title"><span class="icon">🔬</span> Protocol <span class="gradient">Capabilities</span></h3>
+<div class="grid-3" style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 1.25rem;">
+    <div class="card">
+        <div style="font-size: 1.5rem; margin-bottom: 0.6rem;">🧠</div>
+        <div style="font-weight: 700; margin-bottom: 0.3rem;">Intelligent Routing</div>
+        <p style="color: var(--text-secondary); font-size: 0.8rem; line-height: 1.5; margin-bottom: 0.5rem;">
+            TF-IDF + compiled regex + LRU cache. Automatic skill selection in &lt;1ms.
+        </p>
+        <span class="process-badge routing">Routing</span>
+    </div>
+    <div class="card">
+        <div style="font-size: 1.5rem; margin-bottom: 0.6rem;">🛡️</div>
+        <div style="font-weight: 700; margin-bottom: 0.3rem;">Built-in Safety</div>
+        <p style="color: var(--text-secondary); font-size: 0.8rem; line-height: 1.5; margin-bottom: 0.5rem;">
+            ML classifier + anomaly detection. Every request scanned before execution.
+        </p>
+        <span class="process-badge safe">Safety</span>
+    </div>
+    <div class="card">
+        <div style="font-size: 1.5rem; margin-bottom: 0.6rem;">🔐</div>
+        <div style="font-weight: 700; margin-bottom: 0.3rem;">Cryptographic Integrity</div>
+        <p style="color: var(--text-secondary); font-size: 0.8rem; line-height: 1.5; margin-bottom: 0.5rem;">
+            JCS canonicalization + ES256/EdDSA signatures. Every request verifiable.
+        </p>
+        <span class="process-badge crypto">Crypto</span>
+    </div>
+    <div class="card">
+        <div style="font-size: 1.5rem; margin-bottom: 0.6rem;">📉</div>
+        <div style="font-weight: 700; margin-bottom: 0.3rem;">Graceful Degradation</div>
+        <p style="color: var(--text-secondary); font-size: 0.8rem; line-height: 1.5; margin-bottom: 0.5rem;">
+            D0→D3 FSM ensures server never crashes. Progressive feature reduction.
+        </p>
+        <span class="process-badge degradation">Degradation</span>
+    </div>
+    <div class="card">
+        <div style="font-size: 1.5rem; margin-bottom: 0.6rem;">🔍</div>
+        <div style="font-weight: 700; margin-bottom: 0.3rem;">Full Traceability</div>
+        <p style="color: var(--text-secondary); font-size: 0.8rem; line-height: 1.5; margin-bottom: 0.5rem;">
+            Every routing decision has trace events. Debug exactly why a skill was chosen.
+        </p>
+        <span class="process-badge routing">Trace</span>
+    </div>
+    <div class="card">
+        <div style="font-size: 1.5rem; margin-bottom: 0.6rem;">⚡</div>
+        <div style="font-weight: 700; margin-bottom: 0.3rem;">Zero Config</div>
+        <p style="color: var(--text-secondary); font-size: 0.8rem; line-height: 1.5; margin-bottom: 0.5rem;">
+            3 lines of code to create a skill. No boilerplate, no registration files.
+        </p>
+        <span class="process-badge safe">Simple</span>
+    </div>
+</div>
+
+<!-- ═══ INSTALLED SKILLS ═══ -->
+<h3 class="section-title"><span class="icon">🧩</span> Installed <span class="gradient">Skills</span></h3>
+<div class="grid">
+    {% for skill_id, skill in skills.items() %}
+    <div class="skill-card">
+        <h3>{{ skill.metadata.name }}</h3>
+        <p>{{ skill.metadata.description }}</p>
+        <div class="skill-id">{{ skill_id }}</div>
+    </div>
+    {% endfor %}
+</div>
+
+<!-- ═══ Animated Counter Script ═══ -->
+<script>
+    // Animate the test counter
+    function animateCounter(el, target, suffix) {
+        let current = 0;
+        const step = Math.ceil(target / 40);
+        const interval = setInterval(() => {
+            current += step;
+            if (current >= target) {
+                current = target;
+                clearInterval(interval);
+            }
+            el.textContent = current + (suffix || '');
+        }, 30);
+    }
+
+    // IntersectionObserver for lazy animation
+    const observer = new IntersectionObserver((entries) => {
+        entries.forEach(entry => {
+            if (entry.isIntersecting) {
+                const el = entry.target;
+                if (el.id === 'metric-tests' && !el.dataset.animated) {
+                    el.dataset.animated = '1';
+                    animateCounter(el, 291, '');
+                }
+            }
+        });
+    }, { threshold: 0.5 });
+
+    const metricTests = document.getElementById('metric-tests');
+    if (metricTests) observer.observe(metricTests);
+</script>
+{% endblock %}

@@ -1,0 +1,119 @@
+{
+  "protocol": "OSP/1.0",
+  "server": "OSP Reference Server v1.0.0",
+  "timestamp": "2026-02-18T23:44:28Z",
+  "elapsed_ms": 1.5,
+  "total": 18,
+  "passed": 17,
+  "failed": 1,
+  "results": [
+    {
+      "id": "RT-001",
+      "name": "Basic Lexical Routing",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "id": "RT-002",
+      "name": "Empty Query Rejection",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "id": "RT-003",
+      "name": "Empty Pool Escalation",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "id": "RT-004",
+      "name": "Escape Hatch Override",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "id": "RT-005",
+      "name": "BM25 Best Match",
+      "passed": true,
+      "detail": "got: org.test.weather"
+    },
+    {
+      "id": "RT-006",
+      "name": "Skip Semantic Condition",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "id": "RT-007",
+      "name": "Trace Events Present",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "id": "RT-008",
+      "name": "IEEE 754 Epsilon",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "id": "SAF-001",
+      "name": "SQL Injection Blocked",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "id": "SAF-002",
+      "name": "Command Injection Blocked",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "id": "SAF-003",
+      "name": "Safe Query Passes",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "id": "SAF-004",
+      "name": "Violence Detection",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "id": "SAF-005",
+      "name": "KL-Divergence Zero for Identical",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "id": "DEG-001",
+      "name": "D0 Allows LLM",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "id": "DEG-002",
+      "name": "D1 Blocks LLM",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "id": "DEG-003",
+      "name": "D3 Sheds Load",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "id": "DEG-004",
+      "name": "D2 Strict Routing Only",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "id": "MDL-001",
+      "name": "Pydantic Models",
+      "passed": false,
+      "detail": "pydantic not installed"
+    }
+  ]
+}

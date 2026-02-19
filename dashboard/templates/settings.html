@@ -1,0 +1,67 @@
+{% extends "base.html" %}
+{% block title %}Settings{% endblock %}
+{% block nav_settings %}active{% endblock %}
+
+{% block content %}
+<div class="card" style="max-width: 800px; margin: 0 auto;">
+    <div class="page-title">
+        <h2>Agent Settings</h2>
+        <p>Configure your Agent's personality and API keys.</p>
+    </div>
+
+    <form id="settings-form" onsubmit="saveSettings(event)">
+        <!-- System Prompt -->
+        <div class="form-group">
+            <label>System Prompt (Persona)</label>
+            <textarea id="system_prompt" name="system_prompt" rows="6">{{ current_prompt }}</textarea>
+            <small>Define who the agent is (e.g., "You are a helpful coding assistant").</small>
+        </div>
+
+        <!-- API Key -->
+        <div class="form-group">
+            <label>Gemini API Key (Update)</label>
+            <input type="password" id="api_key" name="api_key" placeholder="Enter new key to update...">
+        </div>
+
+        <button type="submit" class="btn-primary" style="margin-top: 1rem;">Save Changes</button>
+    </form>
+
+    <div id="save-status" style="margin-top: 1rem; text-align: center;"></div>
+</div>
+
+<script>
+    async function saveSettings(e) {
+        e.preventDefault();
+        const btn = e.target.querySelector('button');
+        const status = document.getElementById('save-status');
+
+        btn.disabled = true;
+        btn.innerText = "Saving...";
+
+        const data = {
+            system_prompt: document.getElementById('system_prompt').value,
+            api_key: document.getElementById('api_key').value
+        };
+
+        try {
+            const response = await fetch('/api/settings', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify(data)
+            });
+
+            if (response.ok) {
+                status.innerHTML = `<span style="color: var(--green);">✅ Settings saved!</span>`;
+                setTimeout(() => status.innerHTML = '', 3000);
+            } else {
+                status.innerHTML = `<span style="color: var(--red);">❌ Error saving settings</span>`;
+            }
+        } catch (error) {
+            status.innerHTML = `<span style="color: var(--red);">❌ Request failed</span>`;
+        }
+
+        btn.disabled = false;
+        btn.innerText = "Save Changes";
+    }
+</script>
+{% endblock %}

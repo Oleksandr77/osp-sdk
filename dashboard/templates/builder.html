@@ -1,0 +1,89 @@
+{% extends "base.html" %}
+{% block title %}Skill Builder{% endblock %}
+{% block nav_builder %}active{% endblock %}
+
+{% block content %}
+<div class="card" style="max-width: 800px; margin: 0 auto;">
+    <div class="page-title">
+        <h2>Skill Builder</h2>
+        <p>Create a new OSP Skill without writing code. Just describe what it should do.</p>
+    </div>
+
+    <form id="skill-form" onsubmit="createSkill(event)">
+        <div class="form-group">
+            <label>Skill Name (ID)</label>
+            <input type="text" name="name" placeholder="e.g. joke_generator" required pattern="[a-z0-9_]+">
+            <small>Lowercase, underscores only.</small>
+        </div>
+
+        <div class="form-group">
+            <label>Description</label>
+            <input type="text" name="description" placeholder="e.g. Generates a funny joke based on a topic" required>
+        </div>
+
+        <div class="form-group">
+            <label>Instructions (Prompt)</label>
+            <textarea name="instructions" rows="5" placeholder="You are a comedian. Write a joke about {{topic}}."
+                required></textarea>
+            <small>Use {{curly_braces}} for arguments.</small>
+        </div>
+
+        <div class="form-group">
+            <label>Arguments</label>
+            <div id="args-container" style="display: flex; flex-direction: column; gap: 0.5rem;"></div>
+            <button type="button" onclick="addArgument()" class="btn btn-ghost"
+                style="font-size: 0.85rem; margin-top: 0.5rem;">+ Add Argument</button>
+        </div>
+
+        <button type="submit" class="btn-primary" style="margin-top: 1rem;">⚡ Create Skill</button>
+    </form>
+</div>
+
+<script>
+    function addArgument() {
+        const container = document.getElementById('args-container');
+        const div = document.createElement('div');
+        div.style.display = 'flex';
+        div.style.gap = '0.5rem';
+
+        div.innerHTML = `
+            <input type="text" placeholder="Name (e.g. topic)" class="arg-name" required style="flex: 1;">
+            <input type="text" placeholder="Description" class="arg-desc" required style="flex: 2;">
+            <button type="button" onclick="this.parentElement.remove()" class="btn" style="background: var(--red); padding: 0.5rem 0.8rem; font-size: 1rem;">×</button>
+        `;
+        container.appendChild(div);
+    }
+
+    async function createSkill(event) {
+        event.preventDefault();
+        const form = event.target;
+
+        const args = {};
+        form.querySelectorAll('#args-container > div').forEach(div => {
+            const name = div.querySelector('.arg-name').value;
+            const desc = div.querySelector('.arg-desc').value;
+            args[name] = { type: 'string', description: desc };
+        });
+
+        const payload = {
+            name: form.name.value,
+            description: form.description.value,
+            instructions: form.instructions.value,
+            parameters: args
+        };
+
+        const res = await fetch('/api/skills/create', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify(payload)
+        });
+
+        if (res.ok) {
+            alert('Skill created successfully!');
+            window.location.href = '/';
+        } else {
+            alert('Error creating skill');
+        }
+    }
+</script>
+{% endblock %}

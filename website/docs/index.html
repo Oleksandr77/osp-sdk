@@ -1,0 +1,714 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ASP SDK Documentation — Amadeq Skill Protocol</title>
+    <meta name="description"
+        content="Complete API reference for the ASP SDK: decorators, server, client, CLI, and configuration.">
+    <meta property="og:title" content="ASP SDK Documentation">
+    <meta property="og:description" content="Complete API reference for the Amadeq Skill Protocol SDK.">
+    <meta property="og:type" content="article">
+    <meta property="og:url" content="https://amadeq.org/docs">
+    <link rel="canonical" href="https://amadeq.org/docs">
+    <link rel="icon" type="image/svg+xml" href="../favicon.svg">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&family=JetBrains+Mono:wght@400;500;600&display=swap"
+        rel="stylesheet">
+    <style>
+        :root {
+            --bg: #06060b;
+            --bg-card: #0d0d16;
+            --border: #1a1a2e;
+            --text: #e2e2f0;
+            --text-muted: #6b6b8d;
+            --accent: #7c6cf7;
+            --accent-light: #b794f4;
+            --green: #00d4aa;
+            --pink: #e879de;
+            --yellow: #f4d35e;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', system-ui, sans-serif;
+            background: var(--bg);
+            color: var(--text);
+            line-height: 1.7;
+        }
+
+        /* NAV */
+        nav {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            z-index: 100;
+            background: rgba(6, 6, 11, 0.9);
+            backdrop-filter: blur(16px);
+            border-bottom: 1px solid var(--border);
+            padding: 0 40px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            height: 60px;
+        }
+
+        .nav-logo {
+            font-weight: 800;
+            font-size: 20px;
+            color: white;
+            text-decoration: none;
+        }
+
+        .nav-logo span {
+            color: var(--accent);
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 8px;
+        }
+
+        .nav-links a {
+            color: var(--text-muted);
+            text-decoration: none;
+            padding: 6px 14px;
+            border-radius: 8px;
+            font-size: 14px;
+            font-weight: 500;
+            transition: all 0.2s;
+        }
+
+        .nav-links a:hover {
+            color: white;
+            background: rgba(124, 108, 247, 0.1);
+        }
+
+        .nav-links a.active {
+            color: var(--accent);
+            background: rgba(124, 108, 247, 0.1);
+        }
+
+        /* LAYOUT */
+        .layout {
+            display: flex;
+            max-width: 1280px;
+            margin: 0 auto;
+            padding-top: 60px;
+            min-height: 100vh;
+        }
+
+        /* SIDEBAR */
+        .sidebar {
+            width: 260px;
+            position: sticky;
+            top: 60px;
+            height: calc(100vh - 60px);
+            overflow-y: auto;
+            padding: 24px 16px;
+            border-right: 1px solid var(--border);
+        }
+
+        .sidebar h4 {
+            font-size: 11px;
+            text-transform: uppercase;
+            letter-spacing: 1.5px;
+            color: var(--text-muted);
+            margin: 20px 0 8px;
+            padding: 0 12px;
+        }
+
+        .sidebar a {
+            display: block;
+            padding: 6px 12px;
+            border-radius: 6px;
+            color: var(--text-muted);
+            text-decoration: none;
+            font-size: 14px;
+            transition: all 0.2s;
+        }
+
+        .sidebar a:hover {
+            color: white;
+            background: rgba(124, 108, 247, 0.08);
+        }
+
+        .sidebar a.active {
+            color: var(--accent);
+            background: rgba(124, 108, 247, 0.1);
+            font-weight: 600;
+        }
+
+        /* CONTENT */
+        .content {
+            flex: 1;
+            padding: 40px 60px;
+            max-width: 860px;
+        }
+
+        .content h1 {
+            font-size: 36px;
+            font-weight: 800;
+            margin-bottom: 8px;
+        }
+
+        .content h1 span {
+            background: linear-gradient(135deg, var(--accent), var(--pink));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .content h2 {
+            font-size: 24px;
+            font-weight: 700;
+            margin-top: 48px;
+            margin-bottom: 16px;
+            padding-bottom: 8px;
+            border-bottom: 1px solid var(--border);
+        }
+
+        .content h3 {
+            font-size: 18px;
+            font-weight: 600;
+            margin-top: 32px;
+            margin-bottom: 12px;
+            color: var(--accent-light);
+        }
+
+        .content p {
+            margin-bottom: 16px;
+            color: var(--text-muted);
+        }
+
+        .content strong {
+            color: var(--text);
+        }
+
+        /* CODE BLOCKS */
+        pre {
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            padding: 20px 24px;
+            margin: 16px 0 24px;
+            overflow-x: auto;
+            font-size: 14px;
+            line-height: 1.6;
+            position: relative;
+        }
+
+        pre code {
+            font-family: 'JetBrains Mono', monospace;
+            color: var(--text);
+        }
+
+        code {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 13px;
+            background: rgba(124, 108, 247, 0.1);
+            padding: 2px 6px;
+            border-radius: 4px;
+            color: var(--accent-light);
+        }
+
+        pre code {
+            background: none;
+            padding: 0;
+        }
+
+        .kw {
+            color: #c792ea;
+        }
+
+        .fn {
+            color: #82aaff;
+        }
+
+        .str {
+            color: #c3e88d;
+        }
+
+        .dec {
+            color: #f4d35e;
+        }
+
+        .cmt {
+            color: #545490;
+        }
+
+        .num {
+            color: #f78c6c;
+        }
+
+        .param {
+            color: #89ddff;
+        }
+
+        .type {
+            color: #ffcb6b;
+        }
+
+        /* CALLOUT */
+        .callout {
+            background: rgba(124, 108, 247, 0.08);
+            border-left: 3px solid var(--accent);
+            padding: 16px 20px;
+            border-radius: 0 8px 8px 0;
+            margin: 16px 0 24px;
+            font-size: 14px;
+        }
+
+        .callout.warning {
+            background: rgba(244, 211, 94, 0.08);
+            border-left-color: var(--yellow);
+        }
+
+        .callout.success {
+            background: rgba(0, 212, 170, 0.08);
+            border-left-color: var(--green);
+        }
+
+        .callout strong {
+            display: block;
+            margin-bottom: 4px;
+        }
+
+        /* TABLE */
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 16px 0 24px;
+        }
+
+        th,
+        td {
+            padding: 10px 16px;
+            text-align: left;
+            font-size: 14px;
+            border-bottom: 1px solid var(--border);
+        }
+
+        th {
+            color: var(--text-muted);
+            font-weight: 600;
+            font-size: 12px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        td code {
+            font-size: 12px;
+        }
+
+        /* BADGE */
+        .badge {
+            display: inline-block;
+            padding: 2px 8px;
+            border-radius: 4px;
+            font-size: 11px;
+            font-weight: 600;
+            text-transform: uppercase;
+        }
+
+        .badge.required {
+            background: rgba(232, 121, 222, 0.15);
+            color: var(--pink);
+        }
+
+        .badge.optional {
+            background: rgba(124, 108, 247, 0.15);
+            color: var(--accent-light);
+        }
+
+        @media (max-width: 768px) {
+            .sidebar {
+                display: none;
+            }
+
+            .content {
+                padding: 24px 20px;
+            }
+
+            nav {
+                padding: 0 20px;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <nav>
+        <a href="../index.html" class="nav-logo">⚡ <span>ASP</span></a>
+        <div class="nav-links">
+            <a href="../index.html">Home</a>
+            <a href="#" class="active">Docs</a>
+            <a href="../index.html#demo">Demo</a>
+            <a href="https://github.com/amadeq/asp-sdk" target="_blank">GitHub →</a>
+        </div>
+    </nav>
+
+    <div class="layout">
+        <aside class="sidebar">
+            <h4>Getting Started</h4>
+            <a href="#install" class="active">Installation</a>
+            <a href="#quickstart">Quick Start</a>
+            <a href="#concepts">Core Concepts</a>
+
+            <h4>API Reference</h4>
+            <a href="#skill-decorator">@skill Decorator</a>
+            <a href="#serve">serve()</a>
+            <a href="#asp-server">ASPServer</a>
+            <a href="#asp-client">ASPClient</a>
+
+            <h4>CLI</h4>
+            <a href="#cli-dev">asp dev</a>
+            <a href="#cli-init">asp init</a>
+            <a href="#cli-skills">asp skills</a>
+
+            <h4>Configuration</h4>
+            <a href="#env-vars">Environment Variables</a>
+            <a href="#routing">Routing Pipeline</a>
+            <a href="#safety">Safety System</a>
+        </aside>
+
+        <main class="content">
+            <h1>⚡ <span>ASP SDK</span> Documentation</h1>
+            <p>Complete API reference for the Amadeq Skill Protocol SDK. Build AI skills in 3 lines.</p>
+
+            <!-- INSTALLATION -->
+            <h2 id="install">Installation</h2>
+            <pre><code><span class="cmt"># Install from PyPI</span>
+pip install asp-sdk
+
+<span class="cmt"># Or with dev tools</span>
+pip install asp-sdk[dev]</code></pre>
+
+            <div class="callout">
+                <strong>📋 Requirements</strong>
+                Python 3.9+ · No external dependencies for core functionality
+            </div>
+
+            <!-- QUICK START -->
+            <h2 id="quickstart">Quick Start</h2>
+            <p>Create a file <code>main.py</code> and add:</p>
+            <pre><code><span class="kw">from</span> asp <span class="kw">import</span> skill, serve
+
+<span class="dec">@skill</span>(<span class="str">"greet"</span>, description=<span class="str">"Say hello"</span>)
+<span class="kw">def</span> <span class="fn">greet</span>(<span class="param">name</span>: <span class="type">str</span>) -> <span class="type">str</span>:
+    <span class="kw">return</span> <span class="str">f"Hello, </span>{name}<span class="str">!"</span>
+
+<span class="fn">serve</span>()  <span class="cmt"># → localhost:8080</span></code></pre>
+
+            <pre><code><span class="cmt"># Run</span>
+asp dev main.py
+
+<span class="cmt"># Test</span>
+curl -X POST localhost:8080/asp-rpc \
+  -d '{"jsonrpc":"2.0","method":"asp.route","params":{"query":"say hi to Alex"},"id":1}'</code></pre>
+
+            <!-- CONCEPTS -->
+            <h2 id="concepts">Core Concepts</h2>
+            <h3>How Routing Works</h3>
+            <p>ASP uses a <strong>4-stage routing pipeline</strong> to match natural language queries to skills:</p>
+            <table>
+                <tr>
+                    <th>Stage</th>
+                    <th>Engine</th>
+                    <th>Purpose</th>
+                </tr>
+                <tr>
+                    <td>1. Safety Check</td>
+                    <td>Regex + ML</td>
+                    <td>Filter dangerous/malicious queries</td>
+                </tr>
+                <tr>
+                    <td>2. BM25</td>
+                    <td>Keyword</td>
+                    <td>Fast keyword matching against skill descriptions</td>
+                </tr>
+                <tr>
+                    <td>3. Semantic</td>
+                    <td>Embeddings</td>
+                    <td>Deep meaning matching (optional)</td>
+                </tr>
+                <tr>
+                    <td>4. Conflict Resolution</td>
+                    <td>Score fusion</td>
+                    <td>Pick the best candidate when multiple match</td>
+                </tr>
+            </table>
+
+            <!-- @skill DECORATOR -->
+            <h2 id="skill-decorator">@skill Decorator</h2>
+            <p>Register a function as a routable skill.</p>
+            <pre><code><span class="dec">@skill</span>(skill_id, *, description, keywords, risk_level)
+<span class="kw">def</span> <span class="fn">my_skill</span>(**kwargs) -> <span class="type">Any</span>: ...</code></pre>
+
+            <table>
+                <tr>
+                    <th>Parameter</th>
+                    <th>Type</th>
+                    <th></th>
+                    <th>Description</th>
+                </tr>
+                <tr>
+                    <td><code>skill_id</code></td>
+                    <td><code>str</code></td>
+                    <td><span class="badge required">required</span></td>
+                    <td>Unique identifier (e.g. <code>"weather"</code>)</td>
+                </tr>
+                <tr>
+                    <td><code>description</code></td>
+                    <td><code>str</code></td>
+                    <td><span class="badge required">required</span></td>
+                    <td>Human-readable description for routing</td>
+                </tr>
+                <tr>
+                    <td><code>keywords</code></td>
+                    <td><code>list[str]</code></td>
+                    <td><span class="badge optional">optional</span></td>
+                    <td>Activation keywords for BM25 matching</td>
+                </tr>
+                <tr>
+                    <td><code>risk_level</code></td>
+                    <td><code>str</code></td>
+                    <td><span class="badge optional">optional</span></td>
+                    <td><code>"low"</code> (default), <code>"medium"</code>, <code>"high"</code></td>
+                </tr>
+            </table>
+
+            <h3>Examples</h3>
+            <pre><code><span class="dec">@skill</span>(<span class="str">"calculator"</span>,
+       description=<span class="str">"Perform mathematical calculations"</span>,
+       keywords=[<span class="str">"math"</span>, <span class="str">"calc"</span>, <span class="str">"compute"</span>],
+       risk_level=<span class="str">"low"</span>)
+<span class="kw">def</span> <span class="fn">calculator</span>(<span class="param">expression</span>: <span class="type">str</span>) -> <span class="type">str</span>:
+    <span class="str">"""Evaluate a math expression safely."""</span>
+    allowed = set(<span class="str">"0123456789+-*/.()"</span>)
+    <span class="kw">if not</span> all(c <span class="kw">in</span> allowed <span class="kw">or</span> c == <span class="str">' '</span> <span class="kw">for</span> c <span class="kw">in</span> expression):
+        <span class="kw">return</span> <span class="str">"Error: only basic math allowed"</span>
+    <span class="kw">return</span> <span class="fn">str</span>(<span class="fn">eval</span>(expression))</code></pre>
+
+            <!-- serve() -->
+            <h2 id="serve">serve()</h2>
+            <p>Start the ASP HTTP server with auto-discovery of registered skills.</p>
+            <pre><code><span class="fn">serve</span>(host=<span class="str">"0.0.0.0"</span>, port=<span class="num">8080</span>, dashboard=<span class="kw">True</span>)</code></pre>
+
+            <table>
+                <tr>
+                    <th>Parameter</th>
+                    <th>Default</th>
+                    <th>Description</th>
+                </tr>
+                <tr>
+                    <td><code>host</code></td>
+                    <td><code>"0.0.0.0"</code></td>
+                    <td>Bind address</td>
+                </tr>
+                <tr>
+                    <td><code>port</code></td>
+                    <td><code>8080</code></td>
+                    <td>HTTP port</td>
+                </tr>
+                <tr>
+                    <td><code>dashboard</code></td>
+                    <td><code>True</code></td>
+                    <td>Enable built-in dashboard at <code>/_dashboard</code></td>
+                </tr>
+            </table>
+
+            <!-- ASPServer -->
+            <h2 id="asp-server">ASPServer</h2>
+            <p>Low-level server for programmatic control.</p>
+            <pre><code><span class="kw">from</span> asp.server <span class="kw">import</span> ASPServer
+
+server = <span class="fn">ASPServer</span>(host=<span class="str">"0.0.0.0"</span>, port=<span class="num">8080</span>)
+server.<span class="fn">register_skill</span>(my_skill_wrapper)
+server.<span class="fn">start</span>()</code></pre>
+
+            <h3>Methods</h3>
+            <table>
+                <tr>
+                    <th>Method</th>
+                    <th>Description</th>
+                </tr>
+                <tr>
+                    <td><code>register_skill(wrapper)</code></td>
+                    <td>Register a <code>SkillWrapper</code></td>
+                </tr>
+                <tr>
+                    <td><code>start()</code></td>
+                    <td>Start HTTP server (blocking)</td>
+                </tr>
+                <tr>
+                    <td><code>route(query)</code></td>
+                    <td>Route a query to the best skill</td>
+                </tr>
+                <tr>
+                    <td><code>execute(skill_id, **args)</code></td>
+                    <td>Execute a skill directly</td>
+                </tr>
+                <tr>
+                    <td><code>list_skills()</code></td>
+                    <td>List all registered skills</td>
+                </tr>
+            </table>
+
+            <!-- ASPClient -->
+            <h2 id="asp-client">ASPClient</h2>
+            <p>Connect to a running ASP server programmatically.</p>
+            <pre><code><span class="kw">from</span> asp <span class="kw">import</span> ASPClient
+
+client = <span class="fn">ASPClient</span>(<span class="str">"http://localhost:8080"</span>)
+
+<span class="cmt"># Route a natural language query</span>
+result = client.<span class="fn">route</span>(<span class="str">"what's the weather in Kyiv?"</span>)
+
+<span class="cmt"># Execute a skill directly</span>
+result = client.<span class="fn">execute</span>(<span class="str">"greet"</span>, name=<span class="str">"Oleksandr"</span>)
+
+<span class="cmt"># List all available skills</span>
+skills = client.<span class="fn">list_skills</span>()</code></pre>
+
+            <!-- CLI -->
+            <h2 id="cli-dev">CLI: <code>asp dev</code></h2>
+            <p>Start a development server with hot-reload.</p>
+            <pre><code>asp dev main.py              <span class="cmt"># Start on port 8080</span>
+asp dev main.py --port 3000  <span class="cmt"># Custom port</span></code></pre>
+
+            <h2 id="cli-init">CLI: <code>asp init</code></h2>
+            <p>Scaffold a new ASP project.</p>
+            <pre><code>asp init my-project
+<span class="cmt"># Creates:</span>
+<span class="cmt">#   my-project/main.py    — 2 example skills</span>
+<span class="cmt">#   my-project/README.md  — Getting started guide</span></code></pre>
+
+            <h2 id="cli-skills">CLI: <code>asp skills</code></h2>
+            <p>List registered skills on a running server.</p>
+            <pre><code>asp skills                         <span class="cmt"># localhost:8080</span>
+asp skills --host http://my-server  <span class="cmt"># Remote server</span></code></pre>
+
+            <!-- ENV VARS -->
+            <h2 id="env-vars">Environment Variables</h2>
+            <table>
+                <tr>
+                    <th>Variable</th>
+                    <th>Default</th>
+                    <th>Description</th>
+                </tr>
+                <tr>
+                    <td><code>ASP_MODE</code></td>
+                    <td><code>dev</code></td>
+                    <td><code>dev</code> or <code>production</code></td>
+                </tr>
+                <tr>
+                    <td><code>ASP_ADMIN_KEY</code></td>
+                    <td>—</td>
+                    <td>Admin API key for protected endpoints</td>
+                </tr>
+                <tr>
+                    <td><code>ASP_PORT</code></td>
+                    <td><code>8080</code></td>
+                    <td>Server port</td>
+                </tr>
+                <tr>
+                    <td><code>ASP_LOG_LEVEL</code></td>
+                    <td><code>info</code></td>
+                    <td>Logging: debug, info, warning, error</td>
+                </tr>
+            </table>
+
+            <!-- ROUTING -->
+            <h2 id="routing">Routing Pipeline</h2>
+            <p>The 4-stage pipeline processes each query in <strong>&lt;1ms</strong>:</p>
+            <div class="callout success">
+                <strong>⚡ Performance</strong>
+                Full 4-stage routing completes in under 1ms. No network calls, no LLM API, pure local intelligence.
+            </div>
+
+            <pre><code><span class="cmt"># Pipeline stages (automatic):</span>
+query → <span class="fn">safety_check</span>()   <span class="cmt"># 1. Block dangerous queries</span>
+      → <span class="fn">bm25_match</span>()     <span class="cmt"># 2. Keyword-based skill matching</span>
+      → <span class="fn">semantic_rank</span>()  <span class="cmt"># 3. Deep meaning matching</span>
+      → <span class="fn">resolve</span>()        <span class="cmt"># 4. Pick winner, break ties</span>
+      → result</code></pre>
+
+            <!-- SAFETY -->
+            <h2 id="safety">Safety System</h2>
+            <p>ASP includes a <strong>3-layer safety system</strong> that runs before any skill execution:</p>
+            <table>
+                <tr>
+                    <th>Layer</th>
+                    <th>Engine</th>
+                    <th>Speed</th>
+                </tr>
+                <tr>
+                    <td>Regex patterns</td>
+                    <td>Pre-compiled blocklist</td>
+                    <td>&lt; 0.01ms</td>
+                </tr>
+                <tr>
+                    <td>ML classifier</td>
+                    <td>Lightweight model</td>
+                    <td>&lt; 0.1ms</td>
+                </tr>
+                <tr>
+                    <td>Anomaly detection</td>
+                    <td>Statistical</td>
+                    <td>&lt; 0.05ms</td>
+                </tr>
+            </table>
+
+            <div class="callout warning">
+                <strong>⚠️ Production</strong>
+                Always set <code>ASP_ADMIN_KEY</code> in production to protect admin endpoints.
+            </div>
+
+            <br><br>
+            <p style="text-align: center; color: var(--text-muted); font-size: 13px;">
+                ⚡ ASP — Amadeq Skill Protocol · <a href="https://amadeq.org"
+                    style="color: var(--accent);">amadeq.org</a> · v0.1.0
+            </p>
+            <br><br>
+        </main>
+    </div>
+
+    <script>
+        // Highlight sidebar link on scroll
+        const sections = document.querySelectorAll('h2[id]');
+        const sidebarLinks = document.querySelectorAll('.sidebar a');
+
+        window.addEventListener('scroll', () => {
+            let current = '';
+            sections.forEach(section => {
+                const sectionTop = section.offsetTop - 100;
+                if (scrollY >= sectionTop) current = section.id;
+            });
+            sidebarLinks.forEach(link => {
+                link.classList.remove('active');
+                if (link.getAttribute('href') === '#' + current) link.classList.add('active');
+            });
+        });
+
+        // Smooth scroll for sidebar
+        sidebarLinks.forEach(link => {
+            link.addEventListener('click', e => {
+                e.preventDefault();
+                const target = document.querySelector(link.getAttribute('href'));
+                if (target) target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+            });
+        });
+    </script>
+</body>
+
+</html>
