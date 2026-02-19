@@ -16,7 +16,7 @@ Quick Start::
 
 __version__ = "0.1.0"
 __protocol__ = "Open Skills Protocol"
-__abbreviation__ = "ASP"
+__abbreviation__ = "OSP"
 
 from asp.decorators import skill
 from asp.server import serve, ASPServer

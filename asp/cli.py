@@ -1,5 +1,5 @@
 """
-ASP CLI — Command-line interface for Amadeq Skill Protocol
+ASP CLI — Command-line interface for Open Skills Protocol
 ===========================================================
 Usage::
 
@@ -40,7 +40,7 @@ def cmd_dev(args):
     port = args.port
     host = args.host
 
-    print(f"\033[95m⚡ ASP Dev Server\033[0m")
+    print(f"\033[95m⚡ OSP Dev Server (ASP Adapter)\033[0m")
     print(f"\033[90m{'─' * 40}\033[0m")
 
     # Set dev mode
@@ -81,7 +81,7 @@ def cmd_init(args):
 
     # Create main.py
     main_py = '''"""
-My ASP Application
+My OSP Application
 ==================
 Start with: asp dev main.py
 """
@@ -112,7 +112,7 @@ if __name__ == "__main__":
 
     readme = f"""# {project_name}
 
-Built with **Amadeq Skill Protocol (ASP)**.
+Built with **Open Skills Protocol (OSP)**.
 
 ## Quick Start
 
@@ -148,7 +148,7 @@ def cmd_skills(args):
         print("No skills found.")
         return
 
-    print(f"\n\033[95m⚡ ASP Skills ({len(skills)})\033[0m\n")
+    print(f"\n\033[95m⚡ OSP Skills ({len(skills)})\033[0m\n")
 
     for s in skills.values():
         kw = ", ".join(s.keywords[:5]) if s.keywords else "—"
@@ -164,7 +164,7 @@ def main():
     """CLI entry point."""
     parser = argparse.ArgumentParser(
         prog="asp",
-        description="⚡ Amadeq Skill Protocol — AI skill routing made simple",
+        description="⚡ Open Skills Protocol — AI skill routing made simple",
     )
     parser.add_argument("--version", action="version", version="asp-sdk 0.1.0")
     subparsers = parser.add_subparsers(dest="command", help="Available commands")
