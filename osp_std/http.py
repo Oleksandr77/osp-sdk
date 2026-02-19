@@ -1,7 +1,7 @@
 import requests
 import socket
 import ipaddress
-from typing import Dict, Any
+from typing import Dict, Any, Optional
 from urllib.parse import urlparse
 
 # Security: SSRF Protection — deny all private/reserved IP ranges
@@ -21,8 +21,12 @@ def _is_private_ip(ip_str: str) -> bool:
     except ValueError:
         return False
 
-def _check_domain(url: str):
-    """SSRF protection: blocks requests to private networks and cloud metadata."""
+def _resolve_and_validate(url: str) -> str:
+    """
+    SSRF + DNS rebinding protection.
+    Resolves hostname, validates IP, returns the first safe IP.
+    The caller must pin the connection to this IP to prevent rebinding.
+    """
     parsed = urlparse(url)
     hostname = parsed.hostname
     if not hostname:
@@ -32,28 +36,54 @@ def _check_domain(url: str):
     if hostname.lower() in DENY_DOMAINS:
         raise PermissionError(f"Access denied to restricted domain: {hostname}")
 
-    # Step 2: DNS resolution check — resolve hostname and verify it's not private
+    # Step 2: DNS resolution — resolve and validate ALL returned IPs
     try:
-        resolved_ips = socket.getaddrinfo(hostname, None)
+        resolved_ips = socket.getaddrinfo(hostname, parsed.port or 443)
+        safe_ip = None
         for family, _, _, _, sockaddr in resolved_ips:
             ip = sockaddr[0]
             if ip.lower() in DENY_DOMAINS or _is_private_ip(ip):
                 raise PermissionError(
                     f"Access denied: {hostname} resolves to private IP {ip}"
                 )
+            if safe_ip is None:
+                safe_ip = ip
+
+        if safe_ip is None:
+            raise PermissionError(f"No IP addresses resolved for {hostname}")
+
+        return safe_ip
     except socket.gaierror:
-        # Can't resolve — block (fail-closed)
         raise PermissionError(f"Cannot resolve hostname: {hostname}")
 
+def _pin_to_ip(url: str, resolved_ip: str) -> str:
+    """Replace hostname with resolved IP in URL to prevent DNS rebinding."""
+    parsed = urlparse(url)
+    # Replace hostname with IP, pass original host as Host header
+    pinned_url = url.replace(f"://{parsed.hostname}", f"://{resolved_ip}", 1)
+    return pinned_url
+
 def get(url: str, params: Dict[str, Any] = None) -> str:
-    _check_domain(url)
-    resp = requests.get(url, params=params, timeout=10)
+    resolved_ip = _resolve_and_validate(url)
+    parsed = urlparse(url)
+    pinned_url = _pin_to_ip(url, resolved_ip)
+    resp = requests.get(
+        pinned_url, params=params, timeout=10,
+        headers={"Host": parsed.hostname},
+        verify=True,
+    )
     resp.raise_for_status()
     return resp.text
 
 def post(url: str, json_data: Dict[str, Any] = None) -> str:
-    _check_domain(url)
-    resp = requests.post(url, json=json_data, timeout=10)
+    resolved_ip = _resolve_and_validate(url)
+    parsed = urlparse(url)
+    pinned_url = _pin_to_ip(url, resolved_ip)
+    resp = requests.post(
+        pinned_url, json=json_data, timeout=10,
+        headers={"Host": parsed.hostname},
+        verify=True,
+    )
     resp.raise_for_status()
     return resp.text
 

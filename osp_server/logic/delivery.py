@@ -9,6 +9,7 @@ Spec reference: DeliveryContract schema (JSON Schema Draft 2020-12)
 
 import uuid
 import time
+import hashlib
 import logging
 from datetime import datetime, timedelta, timezone
 from typing import Dict, Any, Optional, List
@@ -108,16 +109,30 @@ class DeliveryContractEnforcer:
         arguments: Dict[str, Any],
         ttl_seconds: int = 300,
         idempotency_key: Optional[str] = None,
+        degradation_controller=None,
     ) -> Dict[str, Any]:
         """
         Execute a skill with delivery contract enforcement.
 
-        1. Issue contract
-        2. Validate freshness (abort if expired)
-        3. Execute skill
-        4. Record proof
-        5. Return result with contract metadata
+        1. Check degradation state (reject if D3)
+        2. Issue contract
+        3. Validate freshness (abort if expired)
+        4. Execute skill
+        5. Record proof
+        6. Return result with contract metadata
         """
+        # D-state check: reject if system is in critical degradation
+        if degradation_controller and not degradation_controller.check_request_allowed():
+            key = idempotency_key or "rejected"
+            self._append_proof("REJECTED_DEGRADATION", key, {
+                "skill_ref": skill_ref,
+                "reason": "D3_CRITICAL_LOAD_SHEDDING",
+            })
+            return {
+                "error": "Service unavailable: system in D3 critical degradation",
+                "status": "rejected",
+            }
+
         contract = self.issue_contract(
             skill_ref=skill_ref,
             ttl_seconds=ttl_seconds,
@@ -281,13 +296,22 @@ class DeliveryContractEnforcer:
             return "expired"
 
     def _append_proof(self, event_type: str, idempotency_key: str, context: Dict[str, Any]) -> None:
-        """Append an entry to the proof log (bounded)."""
+        """Append an entry to the proof log with hash chain (bounded)."""
         entry = {
             "event_type": event_type,
             "idempotency_key": idempotency_key,
             "timestamp": datetime.now(timezone.utc).isoformat(),
+            "sequence": len(self._proof_log),
             "context": context,
         }
+
+        # Hash chain: each entry references the previous
+        if self._proof_log:
+            prev_hash = hashlib.sha256(str(self._proof_log[-1]).encode()).hexdigest()
+            entry["prev_hash"] = prev_hash
+        else:
+            entry["prev_hash"] = "0" * 64  # Genesis
+
         self._proof_log.append(entry)
 
         # Evict old entries if log is too large

@@ -2,6 +2,11 @@ id: "summarize_content"
 name: "Content Summarizer"
 version: "1.0.0"
 description: "Summarizes text, articles, or videos into concise bullet points."
+activation_strategy: hybrid
+activation_keywords:
+  - "summarize"
+  - "summary"
+  - "report"
 arguments:
   - name: text
     type: string
@@ -16,13 +21,7 @@ arguments:
     description: "Variables or context regarding the source."
   - name: language
     type: string
-    description: "Target language (default: Ukrainian)."
-triggers:
-  - "summarize"
-  - "summary"
-  - "підсумуй"
-  - "коротко про"
-  - "report"
+    description: "Target language (default: English)."
 tags:
   - foundation
   - nlp

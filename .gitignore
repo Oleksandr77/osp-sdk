@@ -5,6 +5,9 @@ token.json
 *.pickle
 data/memory.json
 
+# Internal modules (not part of public OSP)
+ai_core/
+
 # Python
 __pycache__/
 *.py[cod]

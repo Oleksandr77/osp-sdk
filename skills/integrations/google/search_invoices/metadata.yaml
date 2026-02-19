@@ -2,12 +2,11 @@ id: "search_invoices"
 name: "Invoice & Bill Search"
 version: "1.0.0"
 description: "Searches Gmail for invoices, bills, and receipts within a specified time range."
-triggers:
+activation_strategy: hybrid
+activation_keywords:
   - "invoice"
   - "bill"
   - "receipt"
-  - "фактура"
-  - "рахунок"
   - "check my mail"
 tags:
   - google
