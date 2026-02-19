@@ -1,91 +1,91 @@
 # OSP Server Deployment Guide (VPS)
 
-Цей посібник допоможе вам розгорнути OSP Server на чистому Linux сервері (Ubuntu 20.04/22.04).
+This guide will help you deploy the OSP Server on a clean Linux server (Ubuntu 20.04/22.04).
 
-## 1. Підготовка VPS
+## 1. VPS Preparation
 
-Вам потрібен сервер з публічною IP-адресою.
-**Рекомендовані провайдери:**
-- **Hetzner Cloud** (CPX11: ~4€/міс) — хороший баланс ціна/якісь.
-- **DigitalOcean** (Basic Droplet: ~6$/міс).
+You need a server with a public IP address.
+**Recommended Providers:**
+- **Hetzner Cloud** (CPX11: ~4€/mo) — good price/quality balance.
+- **DigitalOcean** (Basic Droplet: ~6$/mo).
 - **AWS Lightsail** / **Google Cloud e2-micro**.
 
-**Вимоги:**
-- OS: Ubuntu 22.04 LTS (бажано)
+**Requirements:**
+- OS: Ubuntu 22.04 LTS (recommended)
 - CPU: 1-2 vCPU
-- RAM: 2GB+ (для Docker та Python)
+- RAM: 2GB+ (for Docker and Python)
 - Disk: 20GB+
 
-## 2. Підключення до сервера
+## 2. Server Connection
 
-Відкрийте термінал на своєму комп'ютері:
+Open a terminal on your computer:
 
 ```bash
-# Замініть IP_ADDRESS на адресу вашого сервера
+# Replace IP_ADDRESS with your server's address
 ssh root@IP_ADDRESS
 ```
 
-## 3. Копіювання файлів
+## 3. Copying Files
 
-Ми підготували всі необхідні файли в папці `06_Operations`. Вам потрібно скопіювати їх на сервер.
-Ви можете зробити це через `scp` (secure copy) з локального терміналу (не на сервері, а на вашому комп'ютері):
+We have prepared all necessary files in the `06_Operations` folder. You need to copy them to the server.
+You can do this via `scp` (secure copy) from your local terminal (not on the server, but on your computer):
 
 ```bash
-# Переконайтеся, що ви в корені проекту
+# Ensure you are at the project root
 cd "/path/to/project"
 
-# Скопіювати папку на сервер
+# Copy folder to server
 scp -r 06_Operations root@IP_ADDRESS:~/osp_server_files
 ```
 
-## 4. Запуск скрипта налаштування
+## 4. Running Setup Script
 
-Поверніться в SSH-сесію на сервері:
+Return to the SSH session on the server:
 
 ```bash
-# Перейти в папку
+# Go to the folder
 cd ~/osp_server_files
 
-# Зробити скрипт виконуваним
+# Make script executable
 chmod +x setup_vps.sh
 
-# Запустити автоматичне налаштування
+# Run automatic setup
 ./setup_vps.sh
 ```
 
-**Що робить цей скрипт:**
-- Оновлює систему.
-- Встановлює Docker та Docker Compose.
-- Налаштовує Firewall (UFW) для відкриття порту 8000.
+**What this script does:**
+- Updates system.
+- Installs Docker and Docker Compose.
+- Configures Firewall (UFW) to open port 8000.
 
-## 5. Запуск OSP Server
+## 5. Starting OSP Server
 
-Після успішного виконання скрипта:
+After successful script execution:
 
 ```bash
-# Запустити контейнери у фоновому режимі
+# Start containers in background mode
 docker compose up -d --build
 
-# Перевірити статус
+# Check status
 docker compose ps
 
-# Переглянути логи
+# View logs
 docker compose logs -f
 ```
 
-## 6. Перевірка
+## 6. Verification
 
-Відкрийте у браузері або через curl:
-`http://IP_ADDRESS:8000/docs` — має відкритися Swagger UI документація.
+Open in browser or verify via curl:
+`http://IP_ADDRESS:8000/docs` — Swagger UI documentation should open.
 
 ---
 
-### Додатково: Прив'язка домену (api.amadeq.org)
+### Optional: Domain Binding (api.amadeq.org)
 
-Якщо ви хочете використовувати домен, вам потрібно:
-1. В DNS-панелі (Cloudflare) створити `A` запис:
+If you want to use a domain, you need to:
+1. Create an `A` record in your DNS panel (Cloudflare):
    - Name: `api`
    - Content: `IP_ADDRESS`
-   - Proxy status: DNS Only (для початку, щоб уникнути проблем з SSL) або Proxied (якщо налаштуєте SSL).
+   - Proxy status: DNS Only (initially, to avoid SSL issues) or Proxied (if you configure SSL).
 
-2. Для HTTPS (Production) рекомендовано додати Nginx як reverse proxy з Let's Encrypt (Certbot).
+2. For HTTPS (Production), it is recommended to add Nginx as a reverse proxy with Let's Encrypt (Certbot).
