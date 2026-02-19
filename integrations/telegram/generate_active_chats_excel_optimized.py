@@ -3,9 +3,11 @@ from datetime import datetime, timedelta, timezone
 import pandas as pd
 import asyncio
 
-# Credentials
-api_id = 13400748
-api_hash = 'b8844f8c4a123fb138769432b214c13c'
+import os
+
+# Credentials — set via environment variables
+api_id = int(os.environ.get("TELEGRAM_API_ID", "0"))
+api_hash = os.environ.get("TELEGRAM_API_HASH", "")
 session_name = 'antigravity_userbot'
 
 client = TelegramClient(session_name, api_id, api_hash)

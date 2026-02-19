@@ -14,9 +14,9 @@ sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), '..')))
 # Add operations root to allow importing ai_core
 sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), '../..')))
 
-# Credentials (REPLACE WITH ENV VARS IN PRODUCTION)
-API_ID = 13400748
-API_HASH = 'b8844f8c4a123fb138769432b214c13c'
+# Credentials — set via environment variables
+API_ID = int(os.environ.get("TELEGRAM_API_ID", "0"))
+API_HASH = os.environ.get("TELEGRAM_API_HASH", "")
 SESSION_NAME = 'antigravity_userbot'
 
 # Configuration Paths
