@@ -1,0 +1,40 @@
+# Internal AMADEQ module — not part of OSP public SDK
+ai_core/
+
+# Python artifacts
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+.Python
+*.egg-info/
+dist/
+build/
+
+# Secrets and tokens
+.env
+*.session
+credentials.json
+token.json
+token_*.json
+*.pickle
+
+# Development artifacts
+.git/
+.gitignore
+node_modules/
+venv/
+.venv/
+
+# Tests (not needed in production image)
+tests/
+
+# Docs
+*.md
+LICENSE
+
+# Integrations (standalone tools — NOT OSP core)
+integrations/
+
+# Dashboard (separate app from OSP server)
+dashboard/

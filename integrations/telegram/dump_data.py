@@ -5,13 +5,13 @@ import os
 import re
 import asyncio
 
-# Credentials
-api_id = 13400748
-api_hash = 'b8844f8c4a123fb138769432b214c13c'
-session_name = 'antigravity_userbot'
+# Credentials — set via environment variables (see .env.example)
+api_id = int(os.getenv("TELEGRAM_API_ID", "0"))
+api_hash = os.getenv("TELEGRAM_API_HASH", "")
+session_name = 'osp_userbot'
 
-# Output Paths
-EXPORT_DIR = "../../../10_Business_Admin/Telegram_Export"
+# Output Paths — configurable via env vars
+EXPORT_DIR = os.getenv("TELEGRAM_EXPORT_DIR", "./telegram_export")
 DOCS_DIR = os.path.join(EXPORT_DIR, "Documents")
 SECRETS_FILE = os.path.join(EXPORT_DIR, "Potential_Secrets.md")
 CONTACTS_FILE = os.path.join(EXPORT_DIR, "Contacts.csv")

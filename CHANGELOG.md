@@ -19,4 +19,5 @@ All notable changes to this project will be documented in this file.
 - OSP Reference Server (FastAPI + Uvicorn)
 - Docker deployment support
 - Prometheus metrics endpoint
-- 291 passing conformance tests
+- 18 conformance tests passing (OSP spec compliance suite)
+- 368 unit tests passing

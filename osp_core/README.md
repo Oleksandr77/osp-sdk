@@ -1,6 +1,6 @@
 # OSP Core SDK
 
-The official Python SDK for the [Open Skills Protocol](https://github.com/antigravity/osp).
+The official Python SDK for the [Open Skills Protocol](https://github.com/Oleksandr77/osp-sdk).
 
 ## Features
 - **JCS**: JSON Canonicalization Scheme implementation.

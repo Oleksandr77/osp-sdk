@@ -1,16 +1,16 @@
 {
     "skills": {
-        "org.antigravity.youtube.analyzer": {
+        "org.osp.youtube.analyzer": {
             "latest": "1.0.0",
             "versions": {
                 "1.0.0": {
-                    "url": "https://github.com/antigravity/skills/releases/download/v1.0.0/youtube-skill.zip",
+                    "url": "https://github.com/Oleksandr77/osp-sdk/releases/download/v1.0.0/youtube-skill.zip",
                     "checksum": "sha256:..."
                 }
             },
             "description": "Analyzes YouTube videos and extracts transcripts."
         },
-        "org.antigravity.google.drive": {
+        "org.osp.google.drive": {
             "latest": "0.1.0",
             "versions": {
                 "0.1.0": {
@@ -20,7 +20,7 @@
             },
             "description": "Search and manage Google Drive files."
         },
-        "org.antigravity.notion": {
+        "org.osp.notion": {
             "latest": "0.0.1",
             "versions": {
                 "0.0.1": {
@@ -28,7 +28,7 @@
                     "checksum": "mock"
                 }
             },
-            "description": "[MOCK] Notion integration skill."
+            "description": "[MOCK] Notion integration skill — not production-ready."
         }
     }
 }

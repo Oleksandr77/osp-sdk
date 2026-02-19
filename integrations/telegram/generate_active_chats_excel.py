@@ -2,11 +2,12 @@ from telethon import TelegramClient
 from datetime import datetime, timedelta, timezone
 import pandas as pd
 import asyncio
+import os
 
-# Credentials
-api_id = 13400748
-api_hash = 'b8844f8c4a123fb138769432b214c13c'
-session_name = 'antigravity_userbot'
+# Credentials — set via environment variables (see .env.example)
+api_id = int(os.getenv("TELEGRAM_API_ID", "0"))
+api_hash = os.getenv("TELEGRAM_API_HASH", "")
+session_name = 'osp_userbot'
 
 client = TelegramClient(session_name, api_id, api_hash)
 
@@ -56,7 +57,7 @@ async def main():
     df = pd.DataFrame(active_chats)
     
     # Save to Excel
-    output_file = "../../../10_Business_Admin/Telegram_Monitoring_Config.xlsx"
+    output_file = os.getenv("TELEGRAM_MONITORING_OUTPUT", "./Telegram_Monitoring_Config.xlsx")
     df.to_excel(output_file, index=False)
     
     print(f"Saved to {output_file}")

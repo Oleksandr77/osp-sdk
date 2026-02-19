@@ -8,20 +8,21 @@ version = "0.1.0"
 description = "Core SDK for the Open Skills Protocol (OSP)"
 readme = "README.md"
 authors = [
-  { name = "Antigravity Team", email = "dev@antigravity.ai" },
+  { name = "OSP Contributors", email = "dev@osp.dev" },
 ]
+license = { text = "Apache-2.0" }
 classifiers = [
     "Programming Language :: Python :: 3",
-    "License :: OSI Approved :: MIT License",
+    "License :: OSI Approved :: Apache Software License",
     "Operating System :: OS Independent",
 ]
 requires-python = ">=3.9"
 dependencies = [
-    "cryptography>=3.4.7",
-    "pydantic>=1.8.0",
+    "cryptography>=42.0.0",
+    "pydantic>=2.5.0",
     "requests>=2.25.1"
 ]
 
 [project.urls]
-"Homepage" = "https://github.com/antigravity/osp-core"
-"Bug Tracker" = "https://github.com/antigravity/osp-core/issues"
+"Homepage" = "https://github.com/Oleksandr77/osp-sdk"
+"Bug Tracker" = "https://github.com/Oleksandr77/osp-sdk/issues"

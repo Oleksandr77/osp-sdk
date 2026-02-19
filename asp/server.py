@@ -1,7 +1,7 @@
 """
-ASP Server — Zero-Config Skill Server
+OSP Server — Zero-Config Skill Server
 =======================================
-Start an ASP server with a single function call.
+Start an OSP server with a single function call.
 
 Usage::
 
@@ -27,8 +27,8 @@ logger = logging.getLogger("asp.server")
 
 class ASPServer:
     """
-    Amadeq Skill Protocol server.
-    Routes JSON-RPC requests through the ASP 4-stage pipeline.
+    Open Skills Protocol (OSP) server.
+    Routes JSON-RPC requests through the OSP 4-stage pipeline.
     """
 
     def __init__(self, host: str = "0.0.0.0", port: int = 8080, dev_mode: bool = False):
@@ -127,7 +127,7 @@ class ASPServer:
         return {
             "skills": [s.to_manifest() for s in skills.values()],
             "count": len(skills),
-            "protocol": "ASP/1.0",
+            "protocol": "OSP/1.0",
         }
 
     def _handle_health(self) -> dict:
@@ -135,7 +135,7 @@ class ASPServer:
         from asp.decorators import get_registered_skills
         return {
             "status": "healthy",
-            "protocol": "ASP/1.0",
+            "protocol": "OSP/1.0",
             "version": "0.1.0",
             "skills_loaded": len(get_registered_skills()),
             "dev_mode": self.dev_mode,
@@ -236,7 +236,7 @@ class ASPServer:
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>ASP Dashboard — Amadeq Skill Protocol</title>
+<title>OSP Dashboard — Open Skills Protocol</title>
 <style>
 :root {{
     --bg: #0a0a0f;
@@ -369,13 +369,13 @@ td code {{ color: var(--accent2); background: var(--surface2); padding: 2px 8px;
 </head>
 <body>
 <div class="header">
-    <h1>⚡ Amadeq Skill Protocol</h1>
+    <h1>⚡ Open Skills Protocol</h1>
     <div class="status"><div class="dot"></div> Running {'(dev mode)' if server.dev_mode else ''}</div>
 </div>
 <div class="container">
     <div class="grid">
         <div class="card"><h2>Skills Loaded</h2><div class="stat">{len(skills)}</div></div>
-        <div class="card"><h2>Protocol Version</h2><div class="stat">ASP/1.0</div></div>
+        <div class="card"><h2>Protocol Version</h2><div class="stat">OSP/1.0</div></div>
     </div>
     <div class="card">
         <h2>Registered Skills</h2>
@@ -430,7 +430,7 @@ async function testRoute() {{
         httpd = HTTPServer((self.host, self.port), handler)
 
         print(f"""
-\033[95m⚡ Amadeq Skill Protocol (ASP) Server\033[0m
+\033[95m⚡ Open Skills Protocol (OSP) Server\033[0m
 \033[90m{'─' * 45}\033[0m
   🌐 Server:    \033[96mhttp://localhost:{self.port}\033[0m
   📡 JSON-RPC:  \033[96mhttp://localhost:{self.port}/asp-rpc\033[0m

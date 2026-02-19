@@ -235,7 +235,7 @@ class Test02_ASPServer(unittest.TestCase):
         r = urllib.request.urlopen(f"http://127.0.0.1:{SERVER_PORT}/health", timeout=5)
         data = json.loads(r.read())
         self.assertEqual(data["status"], "healthy")
-        self.assertEqual(data["protocol"], "ASP/1.0")
+        self.assertEqual(data["protocol"], "OSP/1.0")
         self.assertEqual(data["skills_loaded"], 3)
         self.assertTrue(data["dev_mode"])
 
@@ -322,10 +322,10 @@ class Test02_ASPServer(unittest.TestCase):
 
     # ── Dashboard ──────────────────────────────
     def test_dashboard_endpoint(self):
-        """GET /_dashboard returns HTML with ASP branding."""
+        """GET /_dashboard returns HTML with OSP branding."""
         r = urllib.request.urlopen(f"http://127.0.0.1:{SERVER_PORT}/_dashboard", timeout=5)
         html = r.read().decode()
-        self.assertIn("Amadeq Skill Protocol", html)
+        self.assertIn("Open Skills Protocol", html)
         self.assertIn("srv.greet", html)
         self.assertGreater(len(html), 1000)
 
@@ -485,7 +485,7 @@ class Test06_Package(unittest.TestCase):
     def test_protocol_defined(self):
         """asp.__protocol__ is defined."""
         from asp import __protocol__
-        self.assertEqual(__protocol__, "Amadeq Skill Protocol")
+        self.assertEqual(__protocol__, "Open Skills Protocol")
 
     def test_public_api_exports(self):
         """All public symbols are importable."""

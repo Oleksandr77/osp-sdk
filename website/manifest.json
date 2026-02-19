@@ -1,6 +1,6 @@
 {
-    "name": "ASP — Amadeq Skill Protocol",
-    "short_name": "ASP",
+    "name": "OSP — Open Skills Protocol",
+    "short_name": "OSP",
     "start_url": "/",
     "display": "standalone",
     "background_color": "#06060b",

@@ -14,7 +14,7 @@ SERVER_URL = f"http://127.0.0.1:{SERVER_PORT}"
 AGENT_NAME = "e2e_test_agent"
 
 def start_server():
-    # Add 06_Operations to path so asp_server can be imported
+    # Add 06_Operations to path so osp_server can be imported
     sys.path.append(os.path.join(os.getcwd(), "06_Operations"))
     # Re-import to ensure it finds the app
     from osp_server.server import app
@@ -32,7 +32,7 @@ class TestE2EFull(unittest.TestCase):
         # 2. Create Agent
         print(f"🛠️  Creating agent '{AGENT_NAME}' via CLI...")
         # Use subprocess.run with list to handle spaces in paths
-        cli_path = os.path.join("06_Operations", "asp_cli", "main.py")
+        cli_path = os.path.join("06_Operations", "osp_cli", "main.py")
         subprocess.run(
             [sys.executable, cli_path, "new", "agent", AGENT_NAME],
             check=True,

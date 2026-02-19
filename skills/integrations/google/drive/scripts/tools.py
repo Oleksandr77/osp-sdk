@@ -10,11 +10,23 @@ logger = logging.getLogger(__name__)
 # Note: If the existing token doesn't have this scope, this will fail or need re-auth.
 SCOPES = ['https://www.googleapis.com/auth/drive.readonly']
 
+def _get_integrations_root() -> str:
+    """Return path to integrations/google directory.
+
+    Reads OSP_INTEGRATIONS_ROOT env var first; falls back to resolving
+    relative to this file's location so the skill works both installed
+    and from source without directory-traversal hops.
+    """
+    env_root = os.environ.get("OSP_INTEGRATIONS_ROOT")
+    if env_root:
+        return os.path.join(env_root, "google")
+    # Source-tree fallback: skills/integrations/google/drive/scripts/ -> integrations/google/
+    current_dir = os.path.dirname(os.path.abspath(__file__))
+    return os.path.normpath(os.path.join(current_dir, "..", "..", "..", "..", "..", "integrations", "google"))
+
 def list_profiles():
     """Lists available token profiles."""
-    current_dir = os.path.dirname(os.path.abspath(__file__))
-    ops_root = os.path.abspath(os.path.join(current_dir, "../../../../../"))
-    google_integrations_dir = os.path.join(ops_root, "integrations/google")
+    google_integrations_dir = _get_integrations_root()
     
     profiles = []
     if os.path.exists(google_integrations_dir):
@@ -26,9 +38,7 @@ def list_profiles():
 
 def get_credentials(profile_name=None):
     """Gets valid user credentials from local file."""
-    current_dir = os.path.dirname(os.path.abspath(__file__))
-    ops_root = os.path.abspath(os.path.join(current_dir, "../../../../../"))
-    google_integrations_dir = os.path.join(ops_root, "integrations/google")
+    google_integrations_dir = _get_integrations_root()
     
     # If no profile specified, try to find one or default
     if not profile_name:

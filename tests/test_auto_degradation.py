@@ -21,7 +21,7 @@ class TestAutoDegradation(unittest.TestCase):
     def tearDown(self):
         self.controller.stop_monitoring()
 
-    @patch('asp_server.logic.degradation.psutil') 
+    @patch('osp_server.logic.degradation.psutil') 
     def test_high_cpu_trigger_d3(self, mock_psutil):
         """
         Verify that high CPU (>95%) triggers D3_CRITICAL.
@@ -41,7 +41,7 @@ class TestAutoDegradation(unittest.TestCase):
         self.assertEqual(self.controller.current_level, DegradationLevel.D3_CRITICAL)
         logging.info("   ✅ Correctly escalated to D3 on High CPU.")
 
-    @patch('asp_server.logic.degradation.psutil') 
+    @patch('osp_server.logic.degradation.psutil') 
     def test_high_ram_trigger_d2(self, mock_psutil):
         """
         Verify that high RAM (>85%) triggers D2_MINIMAL.
@@ -58,7 +58,7 @@ class TestAutoDegradation(unittest.TestCase):
         self.assertEqual(self.controller.current_level, DegradationLevel.D2_MINIMAL)
         logging.info("   ✅ Correctly escalated to D2 on High RAM.")
 
-    @patch('asp_server.logic.degradation.psutil') 
+    @patch('osp_server.logic.degradation.psutil') 
     def test_recovery(self, mock_psutil):
         """
         Verify recovery from D3 -> D0 when load drops.

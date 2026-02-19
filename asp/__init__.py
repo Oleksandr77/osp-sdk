@@ -1,5 +1,5 @@
 """
-Amadeq Skill Protocol (ASP) SDK
+Open Skills Protocol (OSP) SDK
 ================================
 Build AI skills in 3 lines. Intelligent routing, built-in safety, zero config.
 

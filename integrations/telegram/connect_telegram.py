@@ -1,10 +1,11 @@
 from telethon import TelegramClient
+import os
 import sys
 
-# Credentials
-api_id = 13400748
-api_hash = 'b8844f8c4a123fb138769432b214c13c'
-phone = '+48697138401'
+# Credentials — set via environment variables (see .env.example)
+api_id = int(os.getenv("TELEGRAM_API_ID", "0"))
+api_hash = os.getenv("TELEGRAM_API_HASH", "")
+phone = os.getenv("TELEGRAM_PHONE", "")
 
 session_name = 'antigravity_userbot'
 

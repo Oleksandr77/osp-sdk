@@ -10,18 +10,17 @@ from google_auth_oauthlib.flow import InstalledAppFlow
 # Scopes
 SCOPES = ['https://www.googleapis.com/auth/gmail.readonly']
 
+def _get_google_integrations_dir() -> str:
+    """Return path to integrations/google dir via env var or source-tree fallback."""
+    env_root = os.environ.get("OSP_INTEGRATIONS_ROOT")
+    if env_root:
+        return os.path.join(env_root, "google")
+    current_dir = os.path.dirname(os.path.abspath(__file__))
+    return os.path.normpath(os.path.join(current_dir, "..", "..", "..", "..", "..", "integrations", "google"))
+
 def get_credentials(profile_name='default'):
     """Gets valid user credentials from local file."""
-    # Build path relative to ai_core or where this runs
-    # This path hacking involves finding the '06_Operations' root
-    
-    current_dir = os.path.dirname(os.path.abspath(__file__))
-    # Assuming we are in 06_Operations/skills/integrations/google/search_invoices/scripts
-    # We need to find 06_Operations/integrations/google/token_{profile}.json
-    
-    # Let's try to locate the operations root
-    ops_root = os.path.abspath(os.path.join(current_dir, "../../../../../"))
-    google_integrations_dir = os.path.join(ops_root, "integrations/google")
+    google_integrations_dir = _get_google_integrations_dir()
     
     token_path = os.path.join(google_integrations_dir, f'token_{profile_name}.json')
     creds_path = os.path.join(google_integrations_dir, 'credentials.json')

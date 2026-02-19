@@ -2,11 +2,12 @@ from telethon import TelegramClient
 from telethon.tl.types import User, Chat, Channel
 from datetime import datetime, timedelta, timezone
 import sys
+import os
 
-# Credentials (reusing from connect_telegram.py)
-api_id = 13400748
-api_hash = 'b8844f8c4a123fb138769432b214c13c'
-session_name = 'antigravity_userbot'
+# Credentials — set via environment variables (see .env.example)
+api_id = int(os.getenv("TELEGRAM_API_ID", "0"))
+api_hash = os.getenv("TELEGRAM_API_HASH", "")
+session_name = 'osp_userbot'
 
 client = TelegramClient(session_name, api_id, api_hash)
 

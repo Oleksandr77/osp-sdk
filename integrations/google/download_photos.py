@@ -22,9 +22,10 @@ def get_unique_filename(path):
         counter += 1
     return f"{filename}_{counter}{extension}"
 
-# Directory to save photos
+# Directory to save photos — configurable via DOWNLOAD_DIR env var
 def download_photos(profile_name):
-    base_download_dir = f"/Users/oleksandrosadchiy/Downloads/Antigravity_Photos_{profile_name}"
+    _default_dir = os.path.expanduser(f"~/Downloads/OSP_Photos_{profile_name}")
+    base_download_dir = os.getenv("DOWNLOAD_DIR", _default_dir)
     print(f"Authenticating as {profile_name}...")
     creds = get_credentials(profile_name)
     service = build('gmail', 'v1', credentials=creds)

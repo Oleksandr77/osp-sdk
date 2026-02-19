@@ -28,7 +28,7 @@ class TestHysteresis(unittest.TestCase):
         # Let's mock inner loop variables by inspecting the code? No.
         # Let's rely on the fact that _monitor_loop calls set_level.
         
-        with patch('asp_server.logic.degradation.psutil') as mock_psutil:
+        with patch('osp_server.logic.degradation.psutil') as mock_psutil:
             with patch('time.sleep', side_effect=InterruptedError("Stop")): 
                 # We can't easily break the loop without throwing exception or setting stop_event.
                 # Let's manually invoke the logic if possible?

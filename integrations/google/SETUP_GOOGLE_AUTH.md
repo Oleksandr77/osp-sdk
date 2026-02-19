@@ -33,7 +33,9 @@ To allow the AI agent to access your Gmail and Google Drive, you need to create 
 
 ## Step 5: Place the File
 Move the `credentials.json` file into this folder:
-`/Users/oleksandrosadchiy/Documents/New Project Antigavity/06_Operations/integrations/google/`
+`/path/to/your/project/integrations/google/`
 
-Once done, tell me: **"I have added the credentials.json file."**
-I will then run the authentication script to complete the link.
+Once done, run the authentication script to complete the link:
+```bash
+python integrations/google/auth.py
+```

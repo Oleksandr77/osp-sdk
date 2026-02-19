@@ -197,9 +197,13 @@ async def run_server():
     
     # 1. Start ngrok tunnel
     try:
+        import os as _os
         from pyngrok import ngrok
-        # Set auth token explicitly to avoid config issues
-        ngrok.set_auth_token("39l90kvKH0yFWtfqhfBhrE16my7_2TMevVfc3E2YJLGqgL6m")
+        # Auth token must be set via NGROK_AUTH_TOKEN env var (see .env.example)
+        _ngrok_token = _os.getenv("NGROK_AUTH_TOKEN", "")
+        if not _ngrok_token:
+            raise RuntimeError("NGROK_AUTH_TOKEN environment variable is not set")
+        ngrok.set_auth_token(_ngrok_token)
         
         # Open a HTTP tunnel on the default port 8000
         # <NgrokTunnel: "https://<public_sub>.ngrok-free.app" -> "http://localhost:8000">

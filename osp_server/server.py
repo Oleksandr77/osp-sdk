@@ -34,7 +34,16 @@ app = FastAPI(
 )
 
 # CORS middleware (configurable via OSP_CORS_ORIGINS env var)
-_cors_origins = os.environ.get("OSP_CORS_ORIGINS", "*").split(",")
+_cors_env = os.environ.get("OSP_CORS_ORIGINS", "")
+if _cors_env:
+    _cors_origins = [o.strip() for o in _cors_env.split(",") if o.strip()]
+else:
+    import logging as _logging
+    _logging.getLogger("osp.server").warning(
+        "OSP_CORS_ORIGINS not set — defaulting to localhost only. "
+        "Set OSP_CORS_ORIGINS=* to allow all origins (not recommended in production)."
+    )
+    _cors_origins = ["http://localhost:8080", "http://localhost:3000", "http://127.0.0.1:8080"]
 app.add_middleware(
     CORSMiddleware,
     allow_origins=_cors_origins,
@@ -183,7 +192,7 @@ async def osp_rpc_endpoint(request: Request):
                     "id": rpc_id
                 })
             
-            # Execute with delivery contract enforcement
+            # Execute with delivery contract enforcement (D3 load-shedding active)
             if hasattr(tools_module, "execute"):
                 delivery_result = delivery_enforcer.execute_with_contract(
                     skill_ref=skill_id,
@@ -191,6 +200,7 @@ async def osp_rpc_endpoint(request: Request):
                     arguments=arguments,
                     ttl_seconds=ttl,
                     idempotency_key=idempotency_key,
+                    degradation_controller=degradation,
                 )
                 if "error" in delivery_result:
                     return JSONResponse(status_code=500, content={
