@@ -64,6 +64,19 @@
       font-size: 15px;
       line-height: 1.65;
       overflow-x: hidden;
+      animation: pageEnter 0.8s ease-out;
+    }
+
+    @keyframes pageEnter {
+      from {
+        opacity: 0;
+        transform: translateY(12px);
+      }
+
+      to {
+        opacity: 1;
+        transform: none;
+      }
     }
 
     /* SCANLINE OVERLAY */
@@ -108,9 +121,19 @@
       align-items: center;
       justify-content: space-between;
       padding: 0 48px;
-      background: rgba(8, 11, 15, 0.92);
+      background: rgba(8, 11, 15, 0.85);
       backdrop-filter: blur(16px);
       border-bottom: 1px solid var(--border);
+      transition: background 0.3s, box-shadow 0.3s;
+    }
+
+    nav.scrolled {
+      background: rgba(8, 11, 15, 0.97);
+      box-shadow: 0 4px 24px rgba(0, 0, 0, 0.4);
+    }
+
+    .nav-links a.active {
+      color: var(--amber) !important;
     }
 
     .nav-logo {
@@ -534,8 +557,68 @@
     /* ── DIVIDER ── */
     .section-divider {
       border: none;
-      border-top: 1px solid var(--border);
-      margin: 0
+      height: 1px;
+      margin: 0;
+      background: linear-gradient(90deg, transparent, rgba(255, 200, 50, 0.2) 20%, rgba(57, 255, 136, 0.15) 50%, rgba(255, 200, 50, 0.2) 80%, transparent);
+    }
+
+    /* ── HERO SHIMMER ── */
+    .h1-line2 {
+      background: linear-gradient(90deg, var(--amber) 0%, #ffe066 40%, var(--amber) 80%);
+      background-size: 200% auto;
+      -webkit-background-clip: text;
+      background-clip: text;
+      -webkit-text-fill-color: transparent;
+      animation: shimmer 4s linear infinite;
+    }
+
+    @keyframes shimmer {
+      to {
+        background-position: 200% center;
+      }
+    }
+
+    /* ── COPY TOOLTIP ── */
+    .install-code {
+      position: relative;
+      cursor: pointer;
+    }
+
+    .copy-toast {
+      position: absolute;
+      top: 8px;
+      right: 12px;
+      font-family: var(--mono);
+      font-size: 10px;
+      color: var(--green);
+      background: var(--green-dim);
+      border: 1px solid rgba(57, 255, 136, 0.2);
+      padding: 2px 8px;
+      border-radius: 2px;
+      opacity: 0;
+      transition: opacity 0.3s;
+      pointer-events: none;
+    }
+
+    .copy-toast.show {
+      opacity: 1;
+    }
+
+    /* ── STAGGER DELAYS ── */
+    .reveal-d1 {
+      transition-delay: 0.1s;
+    }
+
+    .reveal-d2 {
+      transition-delay: 0.2s;
+    }
+
+    .reveal-d3 {
+      transition-delay: 0.3s;
+    }
+
+    .reveal-d4 {
+      transition-delay: 0.4s;
     }
 
     /* ── BRAND SPLIT ── */
@@ -4405,7 +4488,7 @@
     updateMetrics();
     setInterval(updateMetrics, 1100);
 
-    // ── SCROLL REVEAL ──
+    // ── SCROLL REVEAL (with stagger) ──
     const revealObserver = new IntersectionObserver((entries) => {
       entries.forEach(e => {
         if (e.isIntersecting) {
@@ -4419,17 +4502,53 @@
       s.classList.add('reveal');
       revealObserver.observe(s);
     });
-    document.querySelectorAll('.brand-card,.sk-card,.stage,.conf-card,.as-step,.stat-card,.cli-cmd').forEach(el => {
-      el.classList.add('reveal');
-      revealObserver.observe(el);
+    // Stagger sibling cards
+    const staggerGroups = ['.brand-card', '.sk-card', '.stage', '.conf-card', '.as-step', '.stat-card', '.cli-cmd', '.ms-card'];
+    staggerGroups.forEach(sel => {
+      document.querySelectorAll(sel).forEach((el, i) => {
+        el.classList.add('reveal', 'reveal-d' + ((i % 4) + 1));
+        revealObserver.observe(el);
+      });
     });
 
-    // ── BACK TO TOP ──
+    // ── NAV SCROLL EFFECTS ──
+    const navEl = document.querySelector('nav');
+    const navLinks = document.querySelectorAll('.nav-links a[href^="#"]');
+    const sections = document.querySelectorAll('section[id]');
+
     window.addEventListener('scroll', () => {
+      // Back to top
       const btn = document.getElementById('backToTop');
       if (window.scrollY > 400) btn.classList.add('show');
       else btn.classList.remove('show');
+      // Nav background
+      if (window.scrollY > 60) navEl.classList.add('scrolled');
+      else navEl.classList.remove('scrolled');
+      // Active section
+      let current = '';
+      sections.forEach(s => {
+        const top = s.offsetTop - 120;
+        if (window.scrollY >= top) current = s.getAttribute('id');
+      });
+      navLinks.forEach(a => {
+        a.classList.remove('active');
+        if (a.getAttribute('href') === '#' + current) a.classList.add('active');
+      });
     }, { passive: true });
+
+    // ── COPY TO CLIPBOARD ──
+    document.querySelectorAll('.install-code').forEach(block => {
+      const toast = document.createElement('span');
+      toast.className = 'copy-toast';
+      toast.textContent = '✓ copied';
+      block.appendChild(toast);
+      block.addEventListener('click', () => {
+        const text = block.textContent.replace('✓ copied', '').trim();
+        navigator.clipboard.writeText(text);
+        toast.classList.add('show');
+        setTimeout(() => toast.classList.remove('show'), 1500);
+      });
+    });
 
     // ── PARTICLE CANVAS ──
     (function () {
