@@ -1,0 +1,246 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>404 — Page Not Found · OSP</title>
+    <link rel="icon" type="image/svg+xml"
+        href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect fill='%23080b0f' width='64' height='64' rx='8'/%3E%3Ctext x='32' y='42' font-family='monospace' font-weight='700' font-size='22' fill='%23ffc832' text-anchor='middle'%3EOSP%3C/text%3E%3C/svg%3E">
+    <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;600&family=Bebas+Neue&display=swap"
+        rel="stylesheet">
+    <style>
+        :root {
+            --bg: #080b0f;
+            --bg2: #0e1319;
+            --bg3: #141a22;
+            --amber: #ffc832;
+            --green: #39ff88;
+            --red: #ff4d6a;
+            --blue: #38bdf8;
+            --text: #e8e6e1;
+            --muted: #8a8f98;
+            --dim: #585d66;
+            --border: #1e252e;
+            --mono: 'IBM Plex Mono', monospace;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            background: var(--bg);
+            color: var(--text);
+            font-family: var(--mono);
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-direction: column;
+            gap: 32px;
+            overflow: hidden;
+        }
+
+        /* Scanline overlay */
+        body::before {
+            content: '';
+            position: fixed;
+            inset: 0;
+            z-index: 1;
+            pointer-events: none;
+            background: repeating-linear-gradient(0deg, transparent, transparent 2px, rgba(0, 0, 0, 0.03) 2px, rgba(0, 0, 0, 0.03) 4px);
+        }
+
+        .error-code {
+            font-family: 'Bebas Neue', sans-serif;
+            font-size: clamp(120px, 20vw, 240px);
+            line-height: 1;
+            background: linear-gradient(180deg, var(--amber) 0%, var(--red) 100%);
+            -webkit-background-clip: text;
+            background-clip: text;
+            -webkit-text-fill-color: transparent;
+            position: relative;
+        }
+
+        .error-code::after {
+            content: '404';
+            position: absolute;
+            left: 0;
+            top: 0;
+            background: linear-gradient(180deg, var(--amber) 0%, var(--red) 100%);
+            -webkit-background-clip: text;
+            background-clip: text;
+            -webkit-text-fill-color: transparent;
+            filter: blur(30px);
+            opacity: 0.3;
+        }
+
+        .ascii-box {
+            font-size: 11px;
+            line-height: 1.4;
+            color: var(--dim);
+            text-align: left;
+            background: var(--bg2);
+            border: 1px solid var(--border);
+            padding: 20px 24px;
+            border-radius: 4px;
+            max-width: 500px;
+            width: 90%;
+            animation: bootUp 0.6s ease-out;
+        }
+
+        @keyframes bootUp {
+            from {
+                opacity: 0;
+                transform: translateY(8px);
+            }
+
+            to {
+                opacity: 1;
+                transform: none;
+            }
+        }
+
+        .ascii-box .tc {
+            color: var(--amber);
+        }
+
+        .ascii-box .tv {
+            color: var(--green);
+        }
+
+        .ascii-box .tr {
+            color: var(--red);
+        }
+
+        .error-msg {
+            font-size: 13px;
+            color: var(--muted);
+            text-align: center;
+            max-width: 400px;
+            line-height: 1.6;
+        }
+
+        .home-btn {
+            font-family: var(--mono);
+            font-size: 12px;
+            color: var(--bg);
+            background: var(--amber);
+            padding: 10px 28px;
+            border: none;
+            border-radius: 2px;
+            text-decoration: none;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.2s;
+            letter-spacing: 0.04em;
+        }
+
+        .home-btn:hover {
+            background: #ffe066;
+            box-shadow: 0 0 24px rgba(255, 200, 50, 0.25);
+            transform: translateY(-1px);
+        }
+
+        .glitch {
+            animation: glitch 3s infinite;
+        }
+
+        @keyframes glitch {
+
+            0%,
+            95%,
+            100% {
+                transform: none;
+            }
+
+            96% {
+                transform: translate(-2px, 1px);
+            }
+
+            97% {
+                transform: translate(2px, -1px);
+            }
+
+            98% {
+                transform: translate(-1px, -1px);
+            }
+        }
+
+        /* Floating particles */
+        .particle {
+            position: fixed;
+            border-radius: 50%;
+            pointer-events: none;
+            animation: float linear infinite;
+        }
+
+        @keyframes float {
+            0% {
+                transform: translateY(100vh) rotate(0deg);
+                opacity: 0;
+            }
+
+            10% {
+                opacity: 1;
+            }
+
+            90% {
+                opacity: 1;
+            }
+
+            100% {
+                transform: translateY(-100vh) rotate(360deg);
+                opacity: 0;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <div class="error-code glitch">404</div>
+
+    <div class="ascii-box">
+        <span class="tc">ROUTING_ERROR</span> <span class="tr">ROUTE_NOT_FOUND</span>
+        <span class="tc">query:</span> <span class="tv">"${location.pathname}"</span>
+        <span class="tc">status:</span> <span class="tr">NO_MATCHING_SKILL</span>
+        <span class="tc">stage:</span> Stage 0 · Pre-filter
+        <span class="tc">bm25_score:</span> <span class="tv">0.000</span>
+        <span class="tc">action:</span> <span class="tr">SAFE_FALLBACK_SERVED</span>
+        <span class="tc">signed:</span> ES256 · <span class="tv">verified</span>
+    </div>
+
+    <p class="error-msg">
+        The OSP routing pipeline couldn't resolve this path.<br>
+        No skill matched with sufficient confidence.
+    </p>
+
+    <a href="/" class="home-btn">← Return to Protocol Home</a>
+
+    <script>
+        // Set the actual path in the trace
+        document.querySelector('.ascii-box').innerHTML =
+            document.querySelector('.ascii-box').innerHTML
+                .replace('${location.pathname}', location.pathname);
+
+        // Generate floating particles
+        for (let i = 0; i < 12; i++) {
+            const p = document.createElement('div');
+            p.className = 'particle';
+            const size = Math.random() * 3 + 1;
+            p.style.cssText = `
+        width: ${size}px; height: ${size}px;
+        left: ${Math.random() * 100}%;
+        background: ${['rgba(255,200,50,0.3)', 'rgba(57,255,136,0.2)', 'rgba(56,189,248,0.2)'][Math.floor(Math.random() * 3)]};
+        animation-duration: ${Math.random() * 8 + 6}s;
+        animation-delay: ${Math.random() * 5}s;
+      `;
+            document.body.appendChild(p);
+        }
+    </script>
+</body>
+
+</html>

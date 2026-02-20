@@ -2780,6 +2780,47 @@
       font-style: italic;
     }
 
+    /* ── ASCII LOGO ── */
+    .ascii-logo {
+      font-family: var(--mono);
+      font-size: 8px;
+      line-height: 1.2;
+      color: var(--green);
+      white-space: pre;
+      letter-spacing: 0.05em;
+      margin-bottom: 16px;
+      opacity: 0.7;
+      overflow: hidden;
+    }
+
+    .ascii-logo .ascii-line {
+      display: block;
+      opacity: 0;
+      transform: translateX(-8px);
+      transition: opacity 0.3s, transform 0.3s;
+    }
+
+    .ascii-logo .ascii-line.show {
+      opacity: 1;
+      transform: none;
+    }
+
+    /* ── SCROLL-SNAP MOBILE ── */
+    @media (max-width: 768px) {
+      html {
+        scroll-snap-type: y proximity;
+      }
+
+      section {
+        scroll-snap-align: start;
+        scroll-snap-stop: normal;
+      }
+
+      footer {
+        scroll-snap-align: end;
+      }
+    }
+
     .footer-brand .osp-mark-lg {
       font-family: var(--mono);
       font-size: 16px;
@@ -3262,6 +3303,7 @@
     <canvas id="particleCanvas"></canvas>
     <div class="hero-inner">
       <div class="hero-left">
+        <div class="ascii-logo" id="asciiLogo" aria-hidden="true"></div>
         <div class="hero-tag">
           <span class="dot"></span>
           Open Standard · Apache 2.0 · Originated from AMADEQ Skills Protocol
@@ -4634,7 +4676,7 @@
         const rcColor = data.risk === 'LOW' ? 'var(--green)' : data.risk === 'MED' ? 'var(--amber)' : 'var(--red)';
         const preview = liveResponse ? liveResponse.slice(0, 120) + (liveResponse.length > 120 ? '…' : '') : '';
         const liveTag = liveResponse
-          ? '<div class="rc-tag" style="color:var(--green);border-color:rgba(57,255,136,0.3);margin-top:8px;width:100%;line-height:1.5">⚡ LIVE · ' + preview + '</div>'
+          ? '<div class="rc-tag" style="color:var(--green);border-color:rgba(57,255,136,0.3);margin-top:8px;width:100%;line-height:1.5">⚡LIVE · ' + preview + '</div>'
           : '';
         rc.innerHTML = '<div class="rc-label">✓ ROUTING_DECISION_FINAL</div>' +
           '<div class="rc-skill">' + data.skill + '</div>' +
@@ -5005,6 +5047,26 @@
           el.textContent = '★ ' + d.stargazers_count;
         }
       }).catch(() => { });
+
+    // ── ASCII LOGO TYPEWRITER ──
+    (function () {
+      const lines = [
+        ' ██████  ██████ ██████ ',
+        '██    ██ ██      ██   ██',
+        '██    ██  █████  ██████ ',
+        '██    ██      ██ ██      ',
+        ' ██████  ██████ ██      ',
+      ];
+      const container = document.getElementById('asciiLogo');
+      if (!container) return;
+      lines.forEach((line, i) => {
+        const span = document.createElement('span');
+        span.className = 'ascii-line';
+        span.textContent = line;
+        container.appendChild(span);
+        setTimeout(() => span.classList.add('show'), 400 + i * 120);
+      });
+    })();
 
     // ── COUNTER ANIMATION ──
     function animateCounter(el, target, suffix) {
