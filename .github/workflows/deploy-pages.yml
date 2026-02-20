@@ -36,19 +36,4 @@ jobs:
         id: deployment
         uses: actions/deploy-pages@v4
 
-  deploy-vps:
-    needs: deploy
-    runs-on: ubuntu-latest
-    if: github.ref == 'refs/heads/main'
-    steps:
-      - name: Deploy to VPS
-        uses: appleboy/ssh-action@v1
-        with:
-          host: 145.239.88.205
-          username: ubuntu
-          key: ${{ secrets.VPS_SSH_KEY }}
-          script: |
-            sudo curl -so /var/www/osp-website/index.html \
-              https://raw.githubusercontent.com/Oleksandr77/osp-sdk/main/website/index.html
-            sudo nginx -t && sudo systemctl reload nginx
-            echo "✅ VPS deployed successfully"
+
