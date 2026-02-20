@@ -621,6 +621,112 @@
       transition-delay: 0.4s;
     }
 
+    /* ── CURSOR GLOW ── */
+    .cursor-glow {
+      position: fixed;
+      width: 600px;
+      height: 600px;
+      border-radius: 50%;
+      pointer-events: none;
+      z-index: 0;
+      background: radial-gradient(circle, rgba(255, 200, 50, 0.04) 0%, transparent 70%);
+      transform: translate(-50%, -50%);
+      transition: opacity 0.3s;
+      opacity: 0;
+    }
+
+    .cursor-glow.active {
+      opacity: 1;
+    }
+
+    /* ── PLAYGROUND PROGRESS ── */
+    .run-btn {
+      position: relative;
+      overflow: hidden;
+    }
+
+    .run-progress {
+      position: absolute;
+      left: 0;
+      bottom: 0;
+      height: 3px;
+      width: 0;
+      background: linear-gradient(90deg, var(--green), var(--blue));
+      transition: width 0.3s ease;
+      border-radius: 0 0 2px 2px;
+    }
+
+    .run-btn.running {
+      pointer-events: none;
+      opacity: 0.85;
+    }
+
+    .run-btn.running .run-label {
+      animation: btnPulse 1.2s ease infinite;
+    }
+
+    @keyframes btnPulse {
+
+      0%,
+      100% {
+        opacity: 0.6;
+      }
+
+      50% {
+        opacity: 1;
+      }
+    }
+
+    /* ── TRACE EXPAND ── */
+    .rc-trace-toggle {
+      font-family: var(--mono);
+      font-size: 10px;
+      color: var(--muted);
+      cursor: pointer;
+      background: var(--bg);
+      border: 1px solid var(--border);
+      padding: 4px 10px;
+      border-radius: 2px;
+      margin-top: 10px;
+      display: inline-block;
+      transition: color 0.2s;
+    }
+
+    .rc-trace-toggle:hover {
+      color: var(--amber);
+      border-color: var(--border2);
+    }
+
+    .rc-trace-body {
+      max-height: 0;
+      overflow: hidden;
+      transition: max-height 0.4s ease, opacity 0.3s;
+      opacity: 0;
+      font-family: var(--mono);
+      font-size: 10.5px;
+      color: var(--dim);
+      line-height: 1.8;
+      background: var(--bg);
+      border: 1px solid var(--border);
+      border-radius: 2px;
+      margin-top: 8px;
+      padding: 0 12px;
+    }
+
+    .rc-trace-body.open {
+      max-height: 300px;
+      opacity: 1;
+      padding: 12px;
+    }
+
+    .rc-trace-body .tk {
+      color: var(--amber);
+    }
+
+    .rc-trace-body .tv {
+      color: var(--green);
+    }
+
     /* ── BRAND SPLIT ── */
     #brand-split {
       padding: 80px 0;
@@ -3389,7 +3495,8 @@
               <textarea class="qinput" id="qinput">Say hi to Alex</textarea>
             </div>
             <button class="run-btn" id="runBtn" onclick="runRoute()">
-              ▶ Run 4-Stage Pipeline
+              <span class="run-label">▶ Run 4-Stage Pipeline</span>
+              <div class="run-progress" id="runProgress"></div>
             </button>
             <div>
               <div class="pil">L0 Skill Registry (6 skills · metadata.yaml)</div>
@@ -4287,7 +4394,10 @@
       const q = document.getElementById('qinput').value.trim();
       if (!q) return;
       const btn = document.getElementById('runBtn');
+      const bar = document.getElementById('runProgress');
       btn.disabled = true;
+      btn.classList.add('running');
+      bar.style.width = '0%';
       const pane = document.getElementById('pgOutput');
       pane.innerHTML = '';
 
@@ -4303,8 +4413,10 @@
 
       const wrap = document.createElement('div');
       pane.appendChild(wrap);
+      const totalSteps = data.steps.length + 1;
 
       for (let i = 0; i < data.steps.length; i++) {
+        bar.style.width = Math.round(((i + 1) / totalSteps) * 100) + '%';
         await delay(320);
         const s = data.steps[i];
         const el = document.createElement('div');
@@ -4321,17 +4433,25 @@
         el.classList.add('show');
       }
 
+      bar.style.width = '100%';
       await delay(300);
       const liveResponse = await livePromise;
       const rc = document.createElement('div');
       rc.className = 'result-card';
+
+      // Build trace data for expandable view
+      const traceLines = data.steps.map(s =>
+        '<span class="tk">' + s.name + '</span> <span class="tv">' + s.ms + '</span> — ' + s.detail
+      ).join('<br>');
+      const traceHtml = '<div class="rc-trace-toggle" onclick="this.nextElementSibling.classList.toggle(\'open\');this.textContent=this.nextElementSibling.classList.contains(\'open\')?\'▲ Hide Trace\':\'▼ Show Full Trace\'">▼ Show Full Trace</div>' +
+        '<div class="rc-trace-body">' + traceLines + '</div>';
 
       if (data.blocked) {
         rc.style.borderColor = 'rgba(255,77,106,0.3)';
         rc.innerHTML = '<div class="rc-label" style="color:var(--red)">✗ BLOCKED — SAFE_FALLBACK_SERVED</div>' +
           '<div class="rc-skill" style="color:var(--red)">refusal: true</div>' +
           '<div class="rc-tags"><div class="rc-tag" style="color:var(--red);border-color:rgba(255,77,106,0.3)">PREFILTER_SQL_INJECTION</div>' +
-          '<div class="rc-tag">Signed: ES256</div></div>';
+          '<div class="rc-tag">Signed: ES256</div></div>' + traceHtml;
       } else {
         const rcColor = data.risk === 'LOW' ? 'var(--green)' : data.risk === 'MED' ? 'var(--amber)' : 'var(--red)';
         const preview = liveResponse ? liveResponse.slice(0, 120) + (liveResponse.length > 120 ? '…' : '') : '';
@@ -4346,7 +4466,7 @@
           '<div class="rc-tag">' + data.stability + '</div>' +
           '<div class="rc-tag">Signed: ES256</div>' +
           liveTag +
-          '</div>';
+          '</div>' + traceHtml;
         if (liveResponse) pushFeedEntry({ skill: data.skill, score: data.score, ok: true, live: true });
       }
 
@@ -4354,6 +4474,8 @@
       await delay(30);
       rc.classList.add('show');
       btn.disabled = false;
+      btn.classList.remove('running');
+      setTimeout(() => { bar.style.width = '0%'; }, 600);
     }
 
     // ── DEGRADATION STATES ──
@@ -4550,20 +4672,62 @@
       });
     });
 
-    // ── PARTICLE CANVAS ──
+    // ── CURSOR GLOW ──
+    (function () {
+      const glow = document.createElement('div');
+      glow.className = 'cursor-glow';
+      document.body.appendChild(glow);
+      let raf;
+      document.addEventListener('mousemove', (e) => {
+        if (raf) cancelAnimationFrame(raf);
+        raf = requestAnimationFrame(() => {
+          glow.style.left = e.clientX + 'px';
+          glow.style.top = e.clientY + 'px';
+          glow.classList.add('active');
+        });
+      }, { passive: true });
+      document.addEventListener('mouseleave', () => glow.classList.remove('active'));
+    })();
+
+    // ── TYPING ANIMATION (playground) ──
+    window._pickChipOrig = window.pickChip;
+    window.pickChip = function (el, text) {
+      _pickChipOrig(el, text);
+      const input = document.getElementById('qinput');
+      input.value = '';
+      let i = 0;
+      clearInterval(window._typeInterval);
+      window._typeInterval = setInterval(() => {
+        input.value += text[i];
+        i++;
+        if (i >= text.length) clearInterval(window._typeInterval);
+      }, 30);
+    };
+
+    // ── PARTICLE CANVAS (optimized) ──
     (function () {
       const canvas = document.getElementById('particleCanvas');
       if (!canvas) return;
       const ctx = canvas.getContext('2d');
       let particles = [];
-      const PARTICLE_COUNT = 60;
-      const CONNECT_DIST = 120;
+      // Adaptive: fewer particles on mobile / low-end
+      const isMobile = window.innerWidth < 768;
+      const prefersReduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+      const PARTICLE_COUNT = prefersReduced ? 0 : (isMobile ? 25 : 60);
+      const CONNECT_DIST = isMobile ? 80 : 120;
       const colors = ['rgba(255,200,50,', 'rgba(57,255,136,', 'rgba(56,189,248,'];
+      let isVisible = true;
+
+      // IntersectionObserver to pause when hero off-screen
+      const heroEl = document.getElementById('hero');
+      const visObs = new IntersectionObserver(([entry]) => {
+        isVisible = entry.isIntersecting;
+      }, { threshold: 0 });
+      visObs.observe(heroEl);
 
       function resize() {
-        const hero = document.getElementById('hero');
-        canvas.width = hero.offsetWidth;
-        canvas.height = hero.offsetHeight;
+        canvas.width = heroEl.offsetWidth;
+        canvas.height = heroEl.offsetHeight;
       }
 
       function init() {
@@ -4582,6 +4746,7 @@
       }
 
       function animate() {
+        if (!isVisible) { requestAnimationFrame(animate); return; }
         ctx.clearRect(0, 0, canvas.width, canvas.height);
         for (let i = 0; i < particles.length; i++) {
           const p = particles[i];
@@ -4609,8 +4774,7 @@
         requestAnimationFrame(animate);
       }
 
-      init();
-      animate();
+      if (PARTICLE_COUNT > 0) { init(); animate(); }
       window.addEventListener('resize', () => { resize(); });
     })();
 
