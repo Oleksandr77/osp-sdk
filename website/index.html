@@ -18,6 +18,8 @@
   <meta name="twitter:description"
     content="The open standard for AI skill routing. BM25 + embeddings + cryptographic signing.">
   <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="icon" type="image/svg+xml"
+    href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect fill='%23080b0f' width='64' height='64' rx='8'/%3E%3Ctext x='32' y='42' font-family='monospace' font-weight='700' font-size='22' fill='%23ffc832' text-anchor='middle'%3EOSP%3C/text%3E%3C/svg%3E">
   <link
     href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@300;400;500;600&family=Bebas+Neue&family=Barlow:wght@300;400;500;600;700;900&display=swap"
     rel="stylesheet">
@@ -2614,12 +2616,168 @@
     /* ── FOOTER ── */
     footer {
       border-top: 1px solid var(--border);
-      padding: 40px 48px;
-      display: flex;
-      justify-content: space-between;
+      padding: 48px;
+      display: grid;
+      grid-template-columns: 1fr auto 1fr;
       align-items: flex-start;
-      flex-wrap: wrap;
-      gap: 24px;
+      gap: 32px;
+    }
+
+    /* ── SCROLL PROGRESS ── */
+    .scroll-progress {
+      position: fixed;
+      top: 0;
+      left: 0;
+      height: 2px;
+      width: 0;
+      z-index: 200;
+      background: linear-gradient(90deg, var(--amber), var(--green));
+      transition: width 0.05s linear;
+      pointer-events: none;
+    }
+
+    /* ── PRELOADER ── */
+    .preloader {
+      position: fixed;
+      inset: 0;
+      background: var(--bg);
+      z-index: 10000;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-direction: column;
+      gap: 16px;
+      transition: opacity 0.5s, visibility 0.5s;
+    }
+
+    .preloader.hidden {
+      opacity: 0;
+      visibility: hidden;
+      pointer-events: none;
+    }
+
+    .preloader-mark {
+      font-family: var(--mono);
+      font-size: 32px;
+      font-weight: 700;
+      color: var(--bg);
+      background: var(--amber);
+      padding: 8px 20px;
+      border-radius: 4px;
+      animation: preloaderPulse 1.2s ease infinite;
+    }
+
+    .preloader-bar {
+      width: 120px;
+      height: 2px;
+      background: var(--bg3);
+      border-radius: 2px;
+      overflow: hidden;
+    }
+
+    .preloader-fill {
+      height: 100%;
+      width: 0;
+      background: var(--amber);
+      animation: preloaderFill 0.8s ease-out forwards;
+    }
+
+    @keyframes preloaderPulse {
+
+      0%,
+      100% {
+        transform: scale(1);
+      }
+
+      50% {
+        transform: scale(1.05);
+      }
+    }
+
+    @keyframes preloaderFill {
+      to {
+        width: 100%;
+      }
+    }
+
+    /* ── FOCUS STYLES (Accessibility) ── */
+    :focus-visible {
+      outline: 2px solid var(--amber);
+      outline-offset: 2px;
+    }
+
+    .skip-link {
+      position: absolute;
+      top: -100%;
+      left: 16px;
+      background: var(--amber);
+      color: var(--bg);
+      padding: 8px 16px;
+      z-index: 300;
+      font-family: var(--mono);
+      font-size: 12px;
+      border-radius: 0 0 4px 4px;
+      text-decoration: none;
+    }
+
+    .skip-link:focus {
+      top: 0;
+    }
+
+    /* ── FOOTER SOCIAL ── */
+    .footer-social {
+      display: flex;
+      align-items: center;
+      gap: 16px;
+      margin-top: 12px;
+    }
+
+    .footer-social a {
+      color: var(--dim);
+      transition: color 0.2s;
+      text-decoration: none;
+    }
+
+    .footer-social a:hover {
+      color: var(--amber);
+    }
+
+    .footer-social svg {
+      width: 18px;
+      height: 18px;
+      fill: currentColor;
+    }
+
+    .gh-stars {
+      font-family: var(--mono);
+      font-size: 10px;
+      color: var(--muted);
+      background: var(--bg3);
+      border: 1px solid var(--border);
+      padding: 2px 8px;
+      border-radius: 2px;
+      display: inline-flex;
+      align-items: center;
+      gap: 4px;
+    }
+
+    /* ── SYNTAX HIGHLIGHT ── */
+    .install-code .syn-cmd {
+      color: var(--green);
+    }
+
+    .install-code .syn-pkg {
+      color: var(--amber);
+      font-weight: 500;
+    }
+
+    .install-code .syn-flag {
+      color: var(--blue);
+    }
+
+    .install-code .syn-comment {
+      color: var(--dim);
+      font-style: italic;
     }
 
     .footer-brand .osp-mark-lg {
@@ -3063,9 +3221,19 @@
 </head>
 
 <body>
+  <a class="skip-link" href="#hero">Skip to content</a>
+  <!-- PRELOADER -->
+  <div class="preloader" id="preloader">
+    <div class="preloader-mark">OSP</div>
+    <div class="preloader-bar">
+      <div class="preloader-fill"></div>
+    </div>
+  </div>
+  <!-- SCROLL PROGRESS -->
+  <div class="scroll-progress" id="scrollProgress"></div>
 
   <!-- NAV -->
-  <nav>
+  <nav role="navigation" aria-label="Main navigation">
     <div class="nav-logo">
       <span class="osp-mark">OSP</span>
       <span class="nav-title"><span>Open Skills Protocol</span> · openskillsprotocol.dev</span>
@@ -4222,24 +4390,34 @@
   </section>
 
   <!-- FOOTER -->
-  <footer>
+  <footer role="contentinfo">
     <div class="footer-brand">
       <div class="osp-mark-lg">OSP</div>
       <p>Open Skills Protocol · v0.3.2 · Draft for Community Review · Feb 2026</p>
-      <p style="margin-top:4px">Originated by AMADEQ Project · Governed by community · openskillsprotocol.dev</p>
+      <p style="margin-top:4px">Originated by AMADEQ Project · Governed by community</p>
+      <div class="footer-social">
+        <a href="https://github.com/Oleksandr77/osp-sdk" target="_blank" rel="noopener" aria-label="GitHub">
+          <svg viewBox="0 0 24 24">
+            <path
+              d="M12 0C5.37 0 0 5.37 0 12c0 5.31 3.435 9.795 8.205 11.385.6.105.825-.255.825-.57 0-.285-.015-1.23-.015-2.235-3.015.555-3.795-.735-4.035-1.41-.135-.345-.72-1.41-1.23-1.695-.42-.225-1.02-.78-.015-.795.945-.015 1.62.87 1.845 1.23 1.08 1.815 2.805 1.305 3.495.99.105-.78.42-1.305.765-1.605-2.67-.3-5.46-1.335-5.46-5.925 0-1.305.465-2.385 1.23-3.225-.12-.3-.54-1.53.12-3.18 0 0 1.005-.315 3.3 1.23.96-.27 1.98-.405 3-.405s2.04.135 3 .405c2.295-1.56 3.3-1.23 3.3-1.23.66 1.65.24 2.88.12 3.18.765.84 1.23 1.905 1.23 3.225 0 4.605-2.805 5.625-5.475 5.925.435.375.81 1.095.81 2.22 0 1.605-.015 2.895-.015 3.3 0 .315.225.69.825.57A12.02 12.02 0 0024 12c0-6.63-5.37-12-12-12z" />
+          </svg>
+        </a>
+        <span class="gh-stars" id="ghStars">★ —</span>
+        <a href="https://amadeq.org" aria-label="AMADEQ website"
+          style="font-family:var(--mono);font-size:11px">amadeq.org →</a>
+      </div>
     </div>
     <div class="footer-links">
-      <a href="#">Specification</a>
-      <a href="#">GitHub</a>
-      <a href="#">Conformance</a>
-      <a href="#">Skills Registry</a>
-      <a href="#">Working Group</a>
-      <a href="#">Changelog</a>
-      <a href="#">AMADEQ.org →</a>
+      <a href="https://github.com/Oleksandr77/osp-sdk">GitHub</a>
+      <a href="#conform">Conformance</a>
+      <a href="#skills">Skills Registry</a>
+      <a href="#pipeline">Pipeline</a>
+      <a href="#playground">Playground</a>
     </div>
     <div class="footer-lic">
       Apache 2.0 (spec) · CC BY 4.0 (docs)<br>
-      <span style="color:var(--dim)">No single vendor holds veto power</span>
+      <span style="color:var(--dim)">No single vendor holds veto power</span><br>
+      <span style="color:var(--dim);font-size:10px">© 2026 AMADEQ Project</span>
     </div>
   </footer>
 
@@ -4677,16 +4855,20 @@
       const glow = document.createElement('div');
       glow.className = 'cursor-glow';
       document.body.appendChild(glow);
-      let raf;
+      let raf, mx = 0, my = 0;
       document.addEventListener('mousemove', (e) => {
+        mx = e.clientX; my = e.clientY;
         if (raf) cancelAnimationFrame(raf);
         raf = requestAnimationFrame(() => {
-          glow.style.left = e.clientX + 'px';
-          glow.style.top = e.clientY + 'px';
+          glow.style.left = mx + 'px';
+          glow.style.top = my + 'px';
           glow.classList.add('active');
         });
       }, { passive: true });
       document.addEventListener('mouseleave', () => glow.classList.remove('active'));
+      // Expose mouse position for particle attraction
+      window._mouseX = 0; window._mouseY = 0;
+      document.addEventListener('mousemove', (e) => { window._mouseX = e.pageX; window._mouseY = e.pageY; }, { passive: true });
     })();
 
     // ── TYPING ANIMATION (playground) ──
@@ -4704,21 +4886,21 @@
       }, 30);
     };
 
-    // ── PARTICLE CANVAS (optimized) ──
+    // ── PARTICLE CANVAS (optimized + interactive) ──
     (function () {
       const canvas = document.getElementById('particleCanvas');
       if (!canvas) return;
       const ctx = canvas.getContext('2d');
       let particles = [];
-      // Adaptive: fewer particles on mobile / low-end
       const isMobile = window.innerWidth < 768;
       const prefersReduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
       const PARTICLE_COUNT = prefersReduced ? 0 : (isMobile ? 25 : 60);
       const CONNECT_DIST = isMobile ? 80 : 120;
+      const MOUSE_DIST = 200;
+      const MOUSE_FORCE = 0.02;
       const colors = ['rgba(255,200,50,', 'rgba(57,255,136,', 'rgba(56,189,248,'];
       let isVisible = true;
 
-      // IntersectionObserver to pause when hero off-screen
       const heroEl = document.getElementById('hero');
       const visObs = new IntersectionObserver(([entry]) => {
         isVisible = entry.isIntersecting;
@@ -4748,8 +4930,22 @@
       function animate() {
         if (!isVisible) { requestAnimationFrame(animate); return; }
         ctx.clearRect(0, 0, canvas.width, canvas.height);
+        // Mouse position relative to canvas
+        const rect = canvas.getBoundingClientRect();
+        const mxLocal = window._mouseX - rect.left - window.scrollX;
+        const myLocal = window._mouseY - rect.top - window.scrollY;
+
         for (let i = 0; i < particles.length; i++) {
           const p = particles[i];
+          // Mouse attraction
+          const dmx = mxLocal - p.x, dmy = myLocal - p.y;
+          const dMouse = Math.sqrt(dmx * dmx + dmy * dmy);
+          if (dMouse < MOUSE_DIST && dMouse > 1) {
+            p.vx += (dmx / dMouse) * MOUSE_FORCE;
+            p.vy += (dmy / dMouse) * MOUSE_FORCE;
+          }
+          // Dampen velocity
+          p.vx *= 0.99; p.vy *= 0.99;
           p.x += p.vx; p.y += p.vy;
           if (p.x < 0 || p.x > canvas.width) p.vx *= -1;
           if (p.y < 0 || p.y > canvas.height) p.vy *= -1;
@@ -4777,6 +4973,38 @@
       if (PARTICLE_COUNT > 0) { init(); animate(); }
       window.addEventListener('resize', () => { resize(); });
     })();
+
+    // ── SCROLL PROGRESS + PARALLAX ──
+    const scrollBar = document.getElementById('scrollProgress');
+    const heroContent = document.querySelector('.hero-content');
+    window.addEventListener('scroll', () => {
+      // Scroll progress bar
+      const h = document.documentElement.scrollHeight - window.innerHeight;
+      scrollBar.style.width = (window.scrollY / h * 100) + '%';
+      // Subtle parallax on hero
+      if (window.scrollY < window.innerHeight) {
+        const y = window.scrollY * 0.15;
+        heroContent.style.transform = 'translateY(' + y + 'px)';
+        heroContent.style.opacity = 1 - window.scrollY / (window.innerHeight * 0.8);
+      }
+    }, { passive: true });
+
+    // ── PRELOADER ──
+    window.addEventListener('load', () => {
+      setTimeout(() => {
+        document.getElementById('preloader').classList.add('hidden');
+      }, 600);
+    });
+
+    // ── LIVE GITHUB STARS ──
+    fetch('https://api.github.com/repos/Oleksandr77/osp-sdk')
+      .then(r => r.json())
+      .then(d => {
+        const el = document.getElementById('ghStars');
+        if (el && d.stargazers_count !== undefined) {
+          el.textContent = '★ ' + d.stargazers_count;
+        }
+      }).catch(() => { });
 
     // ── COUNTER ANIMATION ──
     function animateCounter(el, target, suffix) {
